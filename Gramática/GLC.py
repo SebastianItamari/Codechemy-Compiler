@@ -16,6 +16,9 @@ class GLC:
         for variable in self.productions.keys():
             print(variable + " -> " + " | ".join(self.productions[variable]))
 
+    def add_terminal(self, terminal):
+        self.terminals.append(terminal)
+
     def add_reachable_productions(self, reachable):
         keys_to_remove = []
         for production_key, production_list in self.productions.items():
@@ -45,6 +48,13 @@ grammar.add_production('S', "ab")
 grammar.add_production('B', "dc")
 grammar.add_production('E', "abF")
 grammar.add_production('F', "abc")
+
+#No es necesario, ya que en mi caso no lo uso
+grammar.add_terminal('a')
+grammar.add_terminal('b')
+grammar.add_terminal('c')
+grammar.add_terminal('d')
+
 print("GRAMÁTICA 1")
 grammar.print_productions()
 print("--------------------------------------")
