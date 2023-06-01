@@ -4,7 +4,6 @@ class GLC:
         self.terminals = []
         self.nonTerminals = []
         self.productions = {}
-
         self.firstS = {}
         self.followingS = {}
 
