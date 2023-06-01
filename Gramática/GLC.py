@@ -40,6 +40,8 @@ class GLC:
         for key in keys_to_remove:
             del self.productions[key]
 
+
+
 grammar = GLC('S')
 
 grammar.add_production('S', "aSb")
