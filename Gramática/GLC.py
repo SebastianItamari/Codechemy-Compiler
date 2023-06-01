@@ -12,8 +12,99 @@ class GLC:
         if variable in self.productions:
             self.productions[variable].append(production)
         else:
-            self.productions[variable] = [production] #nueva clave
-            self.noTerminals.append(variable) 
+            self.productions[variable] = [production]
+        
+        self.addTerminalsAndNonTerminals(variable, production)
+    
+    def addTerminalsAndNonTerminals(self, variable, production):
+        if not variable in self.noTerminals:
+            self.noTerminals.append(variable)
+
+        for c in production.split():
+            if c[0].islower() or c == "λ" and not c in self.terminals:
+                self.terminals.append(c)
+            elif c[0].isupper() and not c in self.noTerminals:
+                self.noTerminals.append(c)
+
+    def addOnlyTerminalsProductions(self):
+        generativeProductions = {}
+        for nt, derivations in self.productions.items():
+            for derivation in derivations:
+                terminals = list(filter(lambda x: x in self.terminals, derivation.split()))
+                if len(terminals) == len(derivation.split()):
+                    if nt in generativeProductions:
+                        generativeProductions[nt].append(derivation)
+                    else:
+                        generativeProductions[nt] = [derivation]
+        return generativeProductions
+
+
+    def addUsefulProductions(self):
+        newProductions = self.addOnlyTerminalsProductions()
+        changed = 1
+
+        while (changed):
+            changed = 0
+            for nt, derivations in self.productions.items():
+                for derivation in derivations:
+                    variables = list(filter(lambda x: not x in self.terminals, derivation.split()))
+                    if nt in newProductions and derivation in newProductions[nt]:
+                        pass 
+                    elif all(c in newProductions.keys() for c in variables):
+                        if nt in newProductions:
+                            newProductions[nt].append(derivation)
+                        else:
+                            newProductions[nt] = [derivation]
+                        changed = 1
+        return newProductions
+
+    def firstPhase(self):
+        usefulProductions = self.addUsefulProductions()
+        productions2Delete = []
+        for nt in self.productions.keys():
+                if nt in usefulProductions:
+                    self.productions[nt] = usefulProductions[nt]
+                else:
+                    productions2Delete.append(nt)
+                    
+        
+        for p in productions2Delete:
+            del self.productions[p]
+            self.noTerminals.remove(p)
+
+        characters = ""
+        for value in self.productions.values():
+            characters += " ".join(value)
+        
+        for t in self.terminals:
+            if not t in characters:
+                self.terminals.remove(t)
+
+    def add_if_not_exist(self, list, element):
+        if element not in list:
+            list.append(element)
+
+    def add_reachable_productions(self, reachable):
+        keys_to_remove = []
+        for production_key, production_list in self.productions.items():
+            for production in production_list:
+                for symbol in production.split():
+                    if production_key in reachable:
+                        if symbol in self.noTerminals:
+                            self.add_if_not_exist(reachable,symbol)
+                            #if symbol not in reachable:
+                            #    reachable.append(symbol)
+                    else:
+                        self.add_if_not_exist(keys_to_remove,production_key)
+        return keys_to_remove
+
+    def second_phase(self):
+        reachable = [self.initial]
+        keys_to_remove = self.add_reachable_productions(reachable)
+
+        for key in keys_to_remove:
+            del self.productions[key]
+            self.noTerminals.remove(key)
 
     def print_productions(self):
         for variable in self.productions.keys():
@@ -244,9 +335,15 @@ grammar.add_terminal('c')
 print("GRAMÁTICA 1")
 grammar.print_productions()
 print("--------------------------------------")
+print("Primera Fase:")
+grammar.firstPhase()
+grammar.print_productions()
+print("--------------------------------------")
 print("Segunda Fase:")
 grammar.second_phase()
 grammar.print_productions()
+
+
 
 print("--------------------------------------")
 print("Eliminación de Recursión a la Izquierda:")
