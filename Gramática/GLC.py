@@ -247,7 +247,7 @@ print("--------------------------------------")
 print("Segunda Fase:")
 grammar.second_phase()
 grammar.print_productions()
-grammar2.print_productions()
+
 print("--------------------------------------")
 print("Eliminación de Recursión a la Izquierda:")
 grammar.eliminate_left_recursion()
@@ -273,6 +273,7 @@ print("PRIMEROS")
 print(grammar2.get_first())
 print("SEGUNDOS")
 print(grammar2.get_following())
+
 
 
 
