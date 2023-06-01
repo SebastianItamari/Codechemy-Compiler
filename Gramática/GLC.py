@@ -105,6 +105,34 @@ class GLC:
                     self.productions[variable_i] = new_productions
 
 
+
+    def left_factoring(self):
+        new_productions = {}
+        for variable in self.noTerminals:
+            productions = self.productions[variable]
+            common_prefix = self.get_common_prefix(productions)
+            print("COMMON", common_prefix)
+            if common_prefix:
+                new_variable = variable + "'"
+                new_productions[variable] = [common_prefix + new_variable]
+                new_productions[new_variable] = [production[len(common_prefix):] for production in productions]
+            else:
+                new_productions[variable] = productions
+        self.productions = new_productions
+
+    def get_common_prefix(self, productions):
+        if len(productions) < 2:
+            return ""
+        common_prefix = ""
+        min_length = min(len(production) for production in productions)
+        for i in range(min_length):
+            symbols = set(production[i] for production in productions if i < len(production))
+            if len(symbols) == 1:
+                common_prefix += productions[0][i]
+            else:
+                break
+        return common_prefix
+
 grammar = GLC('S')
 
 '''
@@ -130,6 +158,8 @@ grammar.add_production('C', "At")
 
 grammar.add_production('S', "aSbB")
 grammar.add_production('S', "cSE")
+grammar.add_production('S', "aSb")
+grammar.add_production('S', "acSE")
 grammar.add_production('S', "ab")
 grammar.add_production('B', "dEacSF")
 grammar.add_production('B', "dEaFca")
@@ -164,6 +194,7 @@ grammar.add_terminal('c')
 '''
 
 
+""""
 print("GRAMÁTICA 1")
 grammar.print_productions()
 print("--------------------------------------")
@@ -179,4 +210,9 @@ grammar.print_productions()
 print("--------------------------------------")
 print("Eliminación de Recursión Indirecta a la Izquierda:")
 grammar.eliminate_indirect_left_recursion()
+grammar.print_productions()
+"""
+
+grammar.left_factoring()
+print("Factorizacion:")
 grammar.print_productions()
