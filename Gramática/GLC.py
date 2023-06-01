@@ -46,6 +46,43 @@ class GLC:
             del self.productions[key]
             self.noTerminals.remove(key)
             
+    def eliminate_left_recursion(self):
+        variables = list(self.productions.keys())
+        for variable in variables:
+            productions = self.productions[variable]
+            new_productions = []
+            recursive_productions = []
+
+            for production in productions:
+                if production.startswith(variable):
+                    recursive_productions.append(production)
+                else:
+                    new_productions.append(production)
+
+            if len(recursive_productions) > 0:
+                new_variable = variable + "'"
+                self.del_productions(variable)  # Eliminar producciones de la variable con recursión
+                self.noTerminals.append(new_variable)
+
+                for production in new_productions:
+                    self.add_production(variable, production + new_variable)
+
+                for production in recursive_productions:
+                    self.add_production(new_variable, production[1:] + new_variable)
+
+                self.add_production(new_variable, 'ε')
+
+
+    def add_terminal(self, terminal):
+        self.terminals.append(terminal)
+    
+    def del_productions(self, variable):
+        if variable in self.productions:
+            del self.productions[variable]
+            if variable in self.noTerminals:
+                self.noTerminals.remove(variable)
+
+
 
     def eliminate_indirect_left_recursion(self):
         variables = self.noTerminals.copy()
@@ -70,6 +107,7 @@ class GLC:
 
 grammar = GLC('S')
 
+'''
 #Prueba 1
 grammar.add_production('S', "AB")
 grammar.add_production('A', "BS")
@@ -78,7 +116,7 @@ grammar.add_production('B', "SS")
 grammar.add_production('B', "a")
 grammar.add_production('C', "dc")
 
-'''
+
 #Prueba 2
 grammar.add_production('P', "Qr")
 grammar.add_production('P', "S")
@@ -100,6 +138,18 @@ grammar.add_production('B', "dEa")
 grammar.add_production('E', "abF")
 grammar.add_production('F', "abc")
 '''
+
+#Prueba 4
+grammar.add_production('S', "Sa")
+grammar.add_production('S', "Sb")
+grammar.add_production('S', "c")
+grammar.add_production('S', "d")
+grammar.add_production('A', "BS")
+grammar.add_production('A', "b")
+grammar.add_production('B', "SS")
+grammar.add_production('B', "a")
+grammar.add_production('C', "dc")
+
 # No es necesario, ya que en mi caso no lo uso
 grammar.add_terminal('a')
 grammar.add_terminal('b')
@@ -112,7 +162,7 @@ grammar.add_terminal('a')
 grammar.add_terminal('b')
 grammar.add_terminal('c')
 '''
-#grammar.add_terminal('d')
+
 
 print("GRAMÁTICA 1")
 grammar.print_productions()
@@ -120,6 +170,12 @@ print("--------------------------------------")
 print("Segunda Fase:")
 grammar.second_phase()
 grammar.print_productions()
+
+print("--------------------------------------")
+print("Eliminación de Recursión a la Izquierda:")
+grammar.eliminate_left_recursion()
+grammar.print_productions()
+
 print("--------------------------------------")
 print("Eliminación de Recursión Indirecta a la Izquierda:")
 grammar.eliminate_indirect_left_recursion()
