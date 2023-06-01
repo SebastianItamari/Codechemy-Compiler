@@ -15,6 +15,10 @@ class GLC:
     def print_productions(self):
         for variable in self.productions.keys():
             print(variable + " -> " + " | ".join(self.productions[variable]))
+        print("NO TERMINALES")
+        print(self.noTerminals)
+        print("TERMINALS")
+        print(self.terminals)
 
     def add_terminal(self, terminal):
         self.terminals.append(terminal)
@@ -40,6 +44,8 @@ class GLC:
 
         for key in keys_to_remove:
             del self.productions[key]
+            self.noTerminals.remove(key)
+            
 
     def eliminate_indirect_left_recursion(self):
         variables = self.noTerminals.copy()
