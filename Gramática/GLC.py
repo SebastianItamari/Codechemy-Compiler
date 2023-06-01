@@ -188,9 +188,9 @@ class GLC:
                 productions_with_prefix = prefix_dict[prefix]
 
                 if len(productions_with_prefix) > 1:
-                    new_lhs = nonterminal + "''"
+                    new_lhs = nonterminal + "'"
                     while new_lhs in self.productions or new_lhs in new_nonterminals:
-                        new_lhs += "''"
+                        new_lhs += "'"
                     new_rules.append([prefix, new_lhs])
                     new_suffixes = []
 
@@ -333,5 +333,13 @@ grammar6 = GLC('C\'')
 grammar6.add_production('C\'', "C\' 🜁 D'")
 grammar6.add_production('C\'', "C\' 🜃 D'")
 grammar6.add_production('C\'', "D\'")
+grammar6.add_production('C\'\'', "D\'")
 grammar6.left_factoring()
 grammar6.print_productions() 
+
+grammar7 = GLC('I\'')
+grammar7.add_production('I\'', "F")
+grammar7.add_production('I\'', "F c I\'")
+grammar7.add_production('I\'', "λ")
+grammar7.left_factoring()
+grammar7.print_productions() 
