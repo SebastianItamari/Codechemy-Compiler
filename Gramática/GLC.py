@@ -185,7 +185,7 @@ class GLC:
                             else:
                                 aux.append(elementList[index + 1])
         return aux
-            
+    
     def eliminate_left_recursion(self):
         variables = list(self.productions.keys())
         for variable in variables:
@@ -202,7 +202,7 @@ class GLC:
             if len(recursive_productions) > 0:
                 new_variable = variable + "'"
                 self.del_productions(variable)  # Eliminar producciones de la variable con recursión
-                self.nonTerminals.append(new_variable)
+                self.noTerminals.append(new_variable)
 
                 for production in new_productions:
                     self.add_production(variable, production + new_variable)
@@ -210,7 +210,7 @@ class GLC:
                 for production in recursive_productions:
                     self.add_production(new_variable, production[1:] + new_variable)
 
-                self.add_production(new_variable, 'ε')
+                self.add_production(new_variable, 'λ')
 
 
     def add_terminal(self, terminal):
@@ -219,13 +219,11 @@ class GLC:
     def del_productions(self, variable):
         if variable in self.productions:
             del self.productions[variable]
-            if variable in self.nonTerminals:
-                self.nonTerminals.remove(variable)
-
-
+            if variable in self.noTerminals:
+                self.noTerminals.remove(variable)
 
     def eliminate_indirect_left_recursion(self):
-        variables = self.nonTerminals.copy()
+        variables = self.noTerminals.copy()
 
         for i in range(len(variables)):
             variable_i = variables[i]
@@ -244,34 +242,88 @@ class GLC:
                             new_productions.append(production_i)
                     self.productions[variable_i] = new_productions
 
-
-
     def left_factoring(self):
         new_productions = {}
-        for variable in self.nonTerminals:
-            productions = self.productions[variable]
-            common_prefix = self.get_common_prefix(productions)
-            print("COMMON", common_prefix)
-            if common_prefix:
-                new_variable = variable + "'"
-                new_productions[variable] = [common_prefix + new_variable]
-                new_productions[new_variable] = [production[len(common_prefix):] for production in productions]
-            else:
-                new_productions[variable] = productions
-        self.productions = new_productions
+        new_terminals = []
+        new_noTerminals = []
 
-    def get_common_prefix(self, productions):
-        if len(productions) < 2:
-            return ""
-        common_prefix = ""
-        min_length = min(len(production) for production in productions)
-        for i in range(min_length):
-            symbols = set(production[i] for production in productions if i < len(production))
-            if len(symbols) == 1:
-                common_prefix += productions[0][i]
-            else:
-                break
-        return common_prefix
+        for nonterminal in self.productions:
+            production_list = self.productions[nonterminal]
+            prefix_dict = {}
+
+            for production in production_list:
+                if isinstance(production, str):
+                    symbols = production.split()
+                else:
+                    symbols = production
+
+                first_symbol = symbols[0]
+
+                if first_symbol not in prefix_dict:
+                    prefix_dict[first_symbol] = [production]
+                else:
+                    prefix_dict[first_symbol].append(production)
+
+            new_rules = []
+            new_nonterminals = {}
+
+            for prefix in prefix_dict:
+                productions_with_prefix = prefix_dict[prefix]
+
+                if len(productions_with_prefix) > 1:
+                    new_lhs = nonterminal + "'"
+                    while new_lhs in self.productions or new_lhs in new_nonterminals:
+                        new_lhs += "'"
+                    new_rules.append([prefix, new_lhs])
+                    new_suffixes = []
+
+                    for production in productions_with_prefix:
+                        if isinstance(production, str):
+                            suffix = ' '.join(production.split()[1:])
+                        else:
+                            suffix = ' '.join(production[1:])
+                        if len(suffix) == 0:
+                            new_suffixes.append('λ')
+                        else:
+                            new_suffixes.append(suffix)
+
+                    new_nonterminals[new_lhs] = new_suffixes
+                else:
+                    new_rules.append(productions_with_prefix[0])
+
+            new_productions[nonterminal] = new_rules
+            new_noTerminals.append(nonterminal)
+
+            for new_nonterminal in new_nonterminals:
+                new_productions[new_nonterminal] = new_nonterminals[new_nonterminal]
+                new_noTerminals.append(new_nonterminal)
+
+        for production_list in new_productions.values():
+            for production in production_list:
+                if isinstance(production, str):
+                    symbols = production.split()
+                else:
+                    symbols = production
+
+                for symbol in symbols:
+                    if symbol not in new_noTerminals and symbol not in new_terminals:
+                        new_terminals.append(symbol)
+
+        self.productions = self.transform_to_productions(new_productions)
+        self.terminals = new_terminals
+        self.noTerminals = new_noTerminals
+
+    def transform_to_productions(self, new_productions):
+        productions = {}
+        for variable in new_productions:
+            rules = []
+            for rule in new_productions[variable]:
+                if isinstance(rule, list):
+                    rules.append(' '.join(rule))
+                else:
+                    rules.append(rule)
+            productions[variable] = rules
+        return productions
 
 print("--------------------------------------")
 print("GRAMÁTICA 2")
