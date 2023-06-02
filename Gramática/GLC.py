@@ -20,10 +20,12 @@ class GLC:
             self.nonTerminals.append(variable)
 
         for c in production.split():
-            if c[0].isupper() and not c in self.nonTerminals:
-                self.nonTerminals.append(c)
+            if c[0].isupper():
+                if not c in self.nonTerminals:
+                    self.nonTerminals.append(c)
             else:
-                self.terminals.append(c)
+                if not c in self.terminals and c != 'λ':
+                    self.terminals.append(c)
         
     def addOnlyTerminalsProductions(self):
         generativeProductions = {}
@@ -124,9 +126,9 @@ class GLC:
             auxList1 =  list.split()
             i = 0
             tam = len(auxList1)
-
             if not auxList1[i] in self.nonTerminals:  #si es un terminal
                 aux.append(auxList1[i])
+                hasLambda = True 
             else:
                 while 'λ' in self.first(auxList1[i]) and i < (tam -1):
                     auxList = self.first(auxList1[i])
@@ -135,6 +137,7 @@ class GLC:
                     i += 1
 
                 aux = aux + self.first(auxList1[i])
+            
         return aux
     
     def add_if_not_exist(self, list, element):
@@ -328,7 +331,7 @@ class GLC:
                     rules.append(rule)
             productions[variable] = rules
         return productions
-
+'''
 print("--------------------------------------")
 print("NUESTRA GRAMÁTICA")
 grammar4 = GLC('A')
@@ -447,6 +450,7 @@ grammar4.left_factoring()
 #grammar4.eliminate_indirect_left_recursion()
 grammar4.eliminate_left_recursion()
 grammar4.print_productions()
+'''
 
 """
 grammar4.print_productions()
