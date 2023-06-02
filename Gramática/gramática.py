@@ -1,4 +1,4 @@
-import GLC
+from GLC import GLC
 print("--------------------------------------")
 print("NUESTRA GRAMÁTICA")
 grammar4 = GLC('A')
