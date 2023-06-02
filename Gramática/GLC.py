@@ -14,16 +14,16 @@ class GLC:
             self.productions[variable] = [production]
         
         self.addTerminalsAndNonTerminals(variable, production)
-    
+
     def addTerminalsAndNonTerminals(self, variable, production):
         if not variable in self.nonTerminals:
             self.nonTerminals.append(variable)
 
         for c in production.split():
-            if c[0].islower() or c == "λ" and not c in self.terminals:
-                self.terminals.append(c)
-            elif c[0].isupper() and not c in self.nonTerminals:
+            if c[0].isupper() and not c in self.nonTerminals:
                 self.nonTerminals.append(c)
+            else:
+                self.terminals.append(c)
         
     def addOnlyTerminalsProductions(self):
         generativeProductions = {}
@@ -83,21 +83,22 @@ class GLC:
         if element not in list:
             list.append(element)
 
-    def add_reachable_productions(self, reachable):
-        keys_to_remove = []
-        for production_key, production_list in self.productions.items():
-            for production in production_list:
+    def add_reachable_productions(self, reachable, key):
+            for production in self.productions[key]:
                 for symbol in production.split():
-                    if production_key in reachable:
-                        if symbol in self.nonTerminals:
-                            self.add_if_not_exist(reachable,symbol)
-                    else:
-                        self.add_if_not_exist(keys_to_remove,production_key)
-        return keys_to_remove
-
+                    if symbol in self.nonTerminals:
+                        if not symbol in reachable:
+                            reachable.append(symbol)
+                            self.add_reachable_productions(reachable, symbol)
+        
     def second_phase(self):
         reachable = [self.initial]
-        keys_to_remove = self.add_reachable_productions(reachable)
+        self.add_reachable_productions(reachable, self.initial)
+
+        keys_to_remove = []
+        for key in self.productions:
+            if not key in reachable:
+                keys_to_remove.append(key)
 
         for key in keys_to_remove:
             del self.productions[key]
@@ -186,44 +187,8 @@ class GLC:
                                 aux.append(elementList[index + 1])
         return aux
     
-    def eliminate_left_recursion(self):
-        variables = list(self.productions.keys())
-        for variable in variables:
-            productions = self.productions[variable]
-            new_productions = []
-            recursive_productions = []
-
-            for production in productions:
-                if production.startswith(variable):
-                    recursive_productions.append(production)
-                else:
-                    new_productions.append(production)
-
-            if len(recursive_productions) > 0:
-                new_variable = variable + "'"
-                self.del_productions(variable)  # Eliminar producciones de la variable con recursión
-                self.noTerminals.append(new_variable)
-
-                for production in new_productions:
-                    self.add_production(variable, production + new_variable)
-
-                for production in recursive_productions:
-                    self.add_production(new_variable, production[1:] + new_variable)
-
-                self.add_production(new_variable, 'λ')
-
-
-    def add_terminal(self, terminal):
-        self.terminals.append(terminal)
-    
-    def del_productions(self, variable):
-        if variable in self.productions:
-            del self.productions[variable]
-            if variable in self.noTerminals:
-                self.noTerminals.remove(variable)
-
     def eliminate_indirect_left_recursion(self):
-        variables = self.noTerminals.copy()
+        variables = self.nonTerminals.copy()
 
         for i in range(len(variables)):
             variable_i = variables[i]
@@ -242,6 +207,44 @@ class GLC:
                             new_productions.append(production_i)
                     self.productions[variable_i] = new_productions
 
+    def add_terminal(self, terminal):
+        self.terminals.append(terminal)
+    
+    def del_productions(self, variable):
+        if variable in self.productions:
+            del self.productions[variable]
+            if variable in self.noTerminals:
+                self.noTerminals.remove(variable)
+
+    def eliminate_left_recursion(self):
+        variables = list(self.productions.keys())
+        for variable in variables:
+            productions = self.productions[variable]
+            new_productions = []
+            recursive_productions = []
+
+            for production in productions:
+                if production.startswith(variable):
+                    recursive_productions.append(production)
+                else:
+                    new_productions.append(production)
+
+            if len(recursive_productions) > 0:
+                new_variable = variable + "'"
+                while new_variable in self.productions or new_variable in self.nonTerminals:
+                        new_variable += "'"
+
+                self.del_productions(variable)  # Eliminar producciones de la variable con recursión
+                self.nonTerminals.append(new_variable)
+
+                for production in new_productions:
+                    self.add_production(variable, production + ' ' + new_variable)
+
+                for production in recursive_productions:
+                    self.add_production(new_variable, production.split()[0] + ' ' + new_variable)
+
+                self.add_production(new_variable, 'λ')
+
     def left_factoring(self):
         new_productions = {}
         new_terminals = []
@@ -257,7 +260,8 @@ class GLC:
                 else:
                     symbols = production
 
-                first_symbol = symbols[0]
+                if symbols and len(symbols) > 0:
+                    first_symbol = symbols[0]
 
                 if first_symbol not in prefix_dict:
                     prefix_dict[first_symbol] = [production]
@@ -326,49 +330,8 @@ class GLC:
         return productions
 
 print("--------------------------------------")
-print("GRAMÁTICA 2")
-grammar2 = GLC("S")
-
-grammar2.add_production("S", "D' B'' coca")  #Reemplazar producción por DB si se quiere probar que si añade 'λ' a los primeros de S
-grammar2.add_production("S", "dedo")
-grammar2.add_production("B''", "exp S")
-grammar2.add_production("B''", "λ")
-grammar2.add_production("D'", "aux")
-grammar2.add_production("D'", "beso D'")
-grammar2.add_production("D'", "λ")
-grammar2.add_production("D'", "dedo B'' aux")
-grammar2.print_productions()
-print("PRIMEROS")
-print(grammar2.get_first())
-print("SIGUIENTES")
-print(grammar2.get_following())
-
-print("--------------------------------------")
-print("GRAMÁTICA 3")
-grammar3 = GLC("E")
-
-grammar3.add_production("E", "T E'")  #Reemplazar producción por DB si se quiere probar que si añade 'λ' a los primeros de S
-grammar3.add_production("E'", "+ T E'")
-grammar3.add_production("E'", "- T E'")
-grammar3.add_production("E'", "λ")
-grammar3.add_production("T", "F T'")
-grammar3.add_production("T'", "* F T'")
-grammar3.add_production("T'", "/ F T'")
-grammar3.add_production("T'", "λ")
-grammar3.add_production("F", "( E )")
-grammar3.add_production("F", "num")
-grammar3.add_production("F", "id")
-
-grammar3.print_productions()
-print("PRIMEROS")
-print(grammar3.get_first())
-print("SIGUIENTES")
-print(grammar3.get_following())
-
-
-print("--------------------------------------")
 print("NUESTRA GRAMÁTICA")
-grammar4 = GLC("A")
+grammar4 = GLC('A')
 
 grammar4.add_production("A", "🜉 Y 🝓")  #Reemplazar producción por DB si se quiere probar que si añade 'λ' a los primeros de S
 grammar4.add_production("B", "🝰")
@@ -391,15 +354,16 @@ grammar4.add_production("J", "🜃")
 grammar4.add_production("K", "L K")  
 grammar4.add_production("K", "M K")
 grammar4.add_production("K", "λ")
-grammar4.add_production("L", "a")   #PENDIENTE, FALTAN MÁS LETRAS
-grammar4.add_production("L", "b")
-grammar4.add_production("L", "c")
-grammar4.add_production("L", "A")
-grammar4.add_production("L", "B")
-grammar4.add_production("L", "C")
-grammar4.add_production("M", "NO'")
-grammar4.add_production("O'", "M")
-grammar4.add_production("O'", "λ")
+grammar4.add_production("L", "'a'")  
+grammar4.add_production("L", "'b'")
+grammar4.add_production("L", "'c'")
+grammar4.add_production("L", "'d'")
+grammar4.add_production("L", "'A'")
+grammar4.add_production("L", "'B'")
+grammar4.add_production("L", "'C'")
+grammar4.add_production("L", "'D'")
+grammar4.add_production("M", "N")
+grammar4.add_production("M", "N M") 
 grammar4.add_production("N", "0")  
 grammar4.add_production("N", "1")  
 grammar4.add_production("N", "2")  
@@ -426,29 +390,68 @@ grammar4.add_production("S", "s e ☾ E' ☽ n 🜚 n Y 🜚 n T")
 grammar4.add_production("T", "i n 🜚 n Y n 🜚")  
 grammar4.add_production("T", "λ")
 grammar4.add_production("U", "d e ☾ E' ☽ n 🜚 n V n 🜚")
-grammar4.add_production("V", "Y V'") 
+grammar4.add_production("V", "Y")
+grammar4.add_production("V", "Y n V")
 grammar4.add_production("V", "a n")
-grammar4.add_production("V'", "n V")
-grammar4.add_production("V'", "λ")
-grammar4.add_production("W", "Y W'")
+grammar4.add_production("W", "Y")
+grammar4.add_production("W", "Y n W")
 grammar4.add_production("W", "r e D n")
-grammar4.add_production("W'", "n W")
-grammar4.add_production("W'", "λ")
 grammar4.add_production("X", "I Q I")
-grammar4.add_production("Y", "Z Y'")
-grammar4.add_production("Y'", "n Y")
-grammar4.add_production("Y'", "λ")
-grammar4.add_production("Z", "")
+grammar4.add_production("Y", "Z")
+grammar4.add_production("Y", "Z n Y")
 grammar4.add_production("Z", "F") 
 grammar4.add_production("Z", "A'")
 grammar4.add_production("Z", "U")
 grammar4.add_production("Z", "S")
 grammar4.add_production("Z", "n")
 grammar4.add_production("Z", "J'")
+grammar4.add_production("Z", "H'")
+grammar4.add_production("Z", "G")
 grammar4.add_production("A'", "B'")
 grammar4.add_production("A'", "E'")
+grammar4.add_production("B'", "B' 🜂 C'")
+grammar4.add_production("B'", "B' 🜄 C'")
+grammar4.add_production("B'", "C'")
+grammar4.add_production("C'", "C' 🜁 D'")
+grammar4.add_production("C'", "C' 🜃 D'")
+grammar4.add_production("C'", "D'")
+grammar4.add_production("D'", "☾ B' ☽")
+grammar4.add_production("D'", "I")
+grammar4.add_production("E'", "E' 🝘 F'")
+grammar4.add_production("E'", "F")
+grammar4.add_production("E'", "X")
+grammar4.add_production("F'", "F' 🜓  G'")
+grammar4.add_production("F'", "G'")
+grammar4.add_production("G'", "🝱 G'")
+grammar4.add_production("G'", "G'")
+grammar4.add_production("G'", "R")
+grammar4.add_production("H'", "f e C e E ☾ I' ☽ n 🜚 n W n 🜚")
+grammar4.add_production("I'", "F")
+grammar4.add_production("I'", "F c I'")
+grammar4.add_production("I'", "λ")
+grammar4.add_production("J'", "K'")
+grammar4.add_production("J'", "L'")
+grammar4.add_production("K'", "🜌 Z n")
+grammar4.add_production("K'", "🜌 a")
+grammar4.add_production("K'", "🜌 r")
+grammar4.add_production("L'", "🜋 W 🜋")
+grammar4.add_production("L'", "🜋 V 🜋")
 
+#grammar4.print_productions()
+
+print("----------------------------------")
+
+grammar4.firstPhase()
+grammar4.second_phase()
+grammar4.left_factoring()
+#grammar4.eliminate_indirect_left_recursion()
+grammar4.eliminate_left_recursion()
 grammar4.print_productions()
 
-
-
+"""
+grammar4.print_productions()
+print("PRIMEROS")
+print(grammar4.get_first())
+print("SIGUIENTES")
+print(grammar4.get_following())
+"""
