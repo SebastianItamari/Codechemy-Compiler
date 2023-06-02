@@ -14,7 +14,7 @@ class GLC:
             self.productions[variable] = [production]
         
         self.addTerminalsAndNonTerminals(variable, production)
-    
+
     def addTerminalsAndNonTerminals(self, variable, production):
         if not variable in self.nonTerminals:
             self.nonTerminals.append(variable)
@@ -22,7 +22,6 @@ class GLC:
         for c in production.split():
             if c[0].isupper() and not c in self.nonTerminals:
                 self.nonTerminals.append(c)
-           # if c[0].islower() or c == "λ" and not c in self.terminals:
             else:
                 self.terminals.append(c)
         
@@ -145,11 +144,13 @@ class GLC:
 
     def get_following(self):
         for production_key in self.productions.keys():
+            print("KEY: " + production_key)
             self.followingS[production_key] = set(self.following(production_key))
         return self.followingS
         
     
     def following(self, key):
+        print(key)
         aux = []
         if key == self.initial:
             aux = ["$"]
@@ -189,6 +190,35 @@ class GLC:
                                 aux.append(elementList[index + 1])
         return aux
     
+    def eliminate_indirect_left_recursion(self):
+        variables = self.nonTerminals.copy()
+
+        for i in range(len(variables)):
+            variable_i = variables[i]
+            for j in range(i):
+                variable_j = variables[j]
+                if variable_i in self.productions and variable_j in self.productions:
+                    productions_i = self.productions[variable_i]
+                    productions_j = self.productions[variable_j]
+                    new_productions = []
+                    for production_i in productions_i:
+                        if production_i.startswith(variable_j):
+                            for production_j in productions_j:
+                                new_production = production_j + production_i[1:]
+                                new_productions.append(new_production)
+                        else:
+                            new_productions.append(production_i)
+                    self.productions[variable_i] = new_productions
+
+    def add_terminal(self, terminal):
+        self.terminals.append(terminal)
+    
+    def del_productions(self, variable):
+        if variable in self.productions:
+            del self.productions[variable]
+            if variable in self.noTerminals:
+                self.noTerminals.remove(variable)
+
     def eliminate_left_recursion(self):
         variables = list(self.productions.keys())
         for variable in variables:
@@ -211,42 +241,12 @@ class GLC:
                 self.nonTerminals.append(new_variable)
 
                 for production in new_productions:
-                    self.add_production(variable, production + new_variable)
+                    self.add_production(variable, production + ' ' + new_variable)
 
                 for production in recursive_productions:
-                    self.add_production(new_variable, production[1:] + new_variable)
+                    self.add_production(new_variable, production.split()[0] + ' ' + new_variable)
 
                 self.add_production(new_variable, 'λ')
-
-
-    def add_terminal(self, terminal):
-        self.terminals.append(terminal)
-    
-    def del_productions(self, variable):
-        if variable in self.productions:
-            del self.productions[variable]
-            if variable in self.noTerminals:
-                self.noTerminals.remove(variable)
-
-    def eliminate_indirect_left_recursion(self):
-        variables = self.noTerminals.copy()
-
-        for i in range(len(variables)):
-            variable_i = variables[i]
-            for j in range(i):
-                variable_j = variables[j]
-                if variable_i in self.productions and variable_j in self.productions:
-                    productions_i = self.productions[variable_i]
-                    productions_j = self.productions[variable_j]
-                    new_productions = []
-                    for production_i in productions_i:
-                        if production_i.startswith(variable_j):
-                            for production_j in productions_j:
-                                new_production = production_j + production_i[1:]
-                                new_productions.append(new_production)
-                        else:
-                            new_productions.append(production_i)
-                    self.productions[variable_i] = new_productions
 
     def left_factoring(self):
         new_productions = {}
@@ -349,49 +349,8 @@ grammar.second_phase()
 grammar.print_productions()
 
 print("--------------------------------------")
-print("GRAMÁTICA 2")
-grammar2 = GLC("S")
-
-grammar2.add_production("S", "D' B'' coca")  #Reemplazar producción por DB si se quiere probar que si añade 'λ' a los primeros de S
-grammar2.add_production("S", "dedo")
-grammar2.add_production("B''", "exp S")
-grammar2.add_production("B''", "λ")
-grammar2.add_production("D'", "aux")
-grammar2.add_production("D'", "beso D'")
-grammar2.add_production("D'", "λ")
-grammar2.add_production("D'", "dedo B'' aux")
-grammar2.print_productions()
-print("PRIMEROS")
-print(grammar2.get_first())
-print("SIGUIENTES")
-print(grammar2.get_following())
-
-print("--------------------------------------")
-print("GRAMÁTICA 3")
-grammar3 = GLC("E")
-
-grammar3.add_production("E", "T E'")  #Reemplazar producción por DB si se quiere probar que si añade 'λ' a los primeros de S
-grammar3.add_production("E'", "+ T E'")
-grammar3.add_production("E'", "- T E'")
-grammar3.add_production("E'", "λ")
-grammar3.add_production("T", "F T'")
-grammar3.add_production("T'", "* F T'")
-grammar3.add_production("T'", "/ F T'")
-grammar3.add_production("T'", "λ")
-grammar3.add_production("F", "( E )")
-grammar3.add_production("F", "num")
-grammar3.add_production("F", "id")
-
-grammar3.print_productions()
-print("PRIMEROS")
-print(grammar3.get_first())
-print("SIGUIENTES")
-print(grammar3.get_following())
-
-
-print("--------------------------------------")
 print("NUESTRA GRAMÁTICA")
-grammar4 = GLC("A")
+grammar4 = GLC('A')
 
 grammar4.add_production("A", "🜉 Y 🝓")  #Reemplazar producción por DB si se quiere probar que si añade 'λ' a los primeros de S
 grammar4.add_production("B", "🝰")
@@ -496,16 +455,29 @@ grammar4.add_production("K'", "🜌 a")
 grammar4.add_production("K'", "🜌 r")
 grammar4.add_production("L'", "🜋 W 🜋")
 grammar4.add_production("L'", "🜋 V 🜋")
+#grammar4.print_productions()
 
-grammar4.print_productions()
-print("------------------------------------------")
+print("----------------------------------")
+
 grammar4.firstPhase()
-grammar4.print_productions()
-print("------------------------------------------")
 grammar4.second_phase()
+grammar4.left_factoring()
+#grammar4.eliminate_indirect_left_recursion()
+grammar4.eliminate_left_recursion()
 grammar4.print_productions()
+#print("------------------------------------------")
+#grammar4.firstPhase()
+#grammar4.print_productions()
+#print("------------------------------------------")
+#grammar4.second_phase()
+#grammar4.print_productions()
 print(grammar4.get_first())
 print(grammar4.get_following())
 
-
-
+"""
+grammar4.print_productions()
+print("PRIMEROS")
+print(grammar4.get_first())
+print("SIGUIENTES")
+print(grammar4.get_following())
+"""
