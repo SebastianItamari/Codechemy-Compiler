@@ -1,0 +1,37 @@
+Test 1
+
+Grammar:
+A -> B C' 
+C' -> + B C' | λ
+B -> F G
+G -> * F G | λ
+F -> a | ( A )
+
+glc.add_production('A', "B C'")
+glc.add_production("C'", "+ B C'")
+glc.add_production("C'", "λ")
+glc.add_production('B', "F G")
+glc.add_production('G', "* F G")
+glc.add_production('G', "λ")
+glc.add_production('F', "a")
+glc.add_production('F', "( A )")
+
+glc.firstS = {
+    'A': ['a', '('], 
+    "C'": ['+', 'λ'], 
+    'B': ['a', '('],
+    'G': ['*', 'λ'],
+    'F': ['a', '('] 
+    }
+
+glc.followingS = {
+    'A': ['$', ')'], 
+    "C'": ['$', ')'], 
+    'B': ['+', '$', ')'],
+    'G': ['+', '$', ')'],
+    'F': ['*', '+', '$', ')'] 
+    }
+
+
+
+
