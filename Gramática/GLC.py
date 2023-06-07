@@ -22,11 +22,12 @@ class GLC:
             self.nonTerminals.append(variable)
 
         for c in production.split():
+
             if c[0].isupper() and c not in self.nonTerminals:
                 self.nonTerminals.append(c)
             elif not c[0].isupper() or c ==  "λ": #and not c in self.nonTerminals:
-                self.terminals.append(c)
-        
+                self.terminals.append(c) 
+       
     def addOnlyTerminalsProductions(self):
         generativeProductions = {}
         for nt, derivations in self.productions.items():
@@ -173,7 +174,7 @@ class GLC:
                                     aux += self.following(noTerminal,initialKey)
                         else:
                             if elementList[index + 1] in self.nonTerminals:
-                                first = self.firstS[elementList[index + 1]]
+                                first = self.firstS[elementList[index + 1]].copy()
                                 if 'λ' in first:
                                     first.remove('λ')
                                     aux += first
@@ -329,24 +330,7 @@ class GLC:
                     rules.append(rule)
             productions[variable] = rules
         return productions
-
-#grammar = GLC("S")
 '''
-grammar.add_production("S", "aux S beta")  #Reemplazar producción por DB si se quiere probar que si añade 'λ' a los primeros de S
-grammar.add_production("S", "coca S E")
-grammar.add_production("S", "aux beta")
-grammar.add_production("B", "dedo coca")
-grammar.add_production("E", "aux beta F")
-grammar.add_production("F", "aux beta coca")
-
-print("GRAMÁTICA 1")
-grammar.print_productions()
-print("--------------------------------------")
-print("Segunda Fase:")
-grammar.second_phase()
-grammar.print_productions()
-'''
-
 print("--------------------------------------")
 print("NUESTRA GRAMÁTICA")
 grammar4 = GLC('A')
@@ -470,6 +454,7 @@ print("PRIMEROS")
 print(grammar4.get_first())
 print("SIGUIENTES")
 print(grammar4.get_following())
+=======
 
 """
 grammar4.print_productions()
@@ -479,7 +464,7 @@ print("SIGUIENTES")
 print(grammar4.get_following())
 """
 '''
-
+'''
 grammar = GLC("A")
 grammar.add_production("A", "B C")
 grammar.add_production("C", "+ B C")

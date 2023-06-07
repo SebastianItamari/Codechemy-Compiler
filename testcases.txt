@@ -1,0 +1,60 @@
+Test 1
+
+Grammar:
+A -> B C' 
+C' -> + B C' | λ
+B -> F G
+G -> * F G | λ
+F -> a | ( A )
+
+glc.add_production('A', "B C'")
+glc.add_production("C'", "+ B C'")
+glc.add_production("C'", "λ")
+glc.add_production('B', "F G")
+glc.add_production('G', "* F G")
+glc.add_production('G', "λ")
+glc.add_production('F', "a")
+glc.add_production('F', "( A )")
+
+glc.firstS = {
+    'A': ['a', '('], 
+    "C'": ['+', 'λ'], 
+    'B': ['a', '('],
+    'G': ['*', 'λ'],
+    'F': ['a', '('] 
+    }
+
+glc.followingS = {
+    'A': ['$', ')'], 
+    "C'": ['$', ')'], 
+    'B': ['+', '$', ')'],
+    'G': ['+', '$', ')'],
+    'F': ['*', '+', '$', ')'] 
+    }
+correct sentence samples:
+( a + a ) * a 
+syntax_chart.parse("( a + a ) * a", chart, glc)
+( a ) * ( a + a )
+syntax_chart.parse("( a ) * ( a + a )", chart, glc)
+a
+syntax_chart.parse("a", chart, glc)
+
+Test 2
+'''
+grammar.add_production("S", "aux S beta")  #Reemplazar producción por DB si se quiere probar que si añade 'λ' a los primeros de S
+grammar.add_production("S", "coca S E")
+grammar.add_production("S", "aux beta")
+grammar.add_production("B", "dedo coca")
+grammar.add_production("E", "aux beta F")
+grammar.add_production("F", "aux beta coca")
+
+print("GRAMÁTICA 1")
+grammar.print_productions()
+print("--------------------------------------")
+print("Segunda Fase:")
+grammar.second_phase()
+grammar.print_productions()
+'''
+
+
+
