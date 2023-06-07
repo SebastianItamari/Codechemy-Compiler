@@ -175,7 +175,7 @@ class GLC:
                                     aux += self.following(noTerminal,initialKey)
                         else:
                             if elementList[index + 1] in self.nonTerminals:
-                                first = self.firstS[elementList[index + 1]]
+                                first = self.firstS[elementList[index + 1]].copy()
                                 if 'λ' in first:
                                     first.remove('λ')
                                     aux += first
