@@ -1,5 +1,5 @@
 from Gramática.GLC import GLC
-from Análisis_Sintáctico import syntaxchart
+from Análisis_Sintáctico import syntax_chart
 
 glc = GLC('A')
 glc.add_production('A', "B C'")
@@ -32,8 +32,8 @@ glc.followingS = {
 
 
 
-chart = syntaxchart.createChart(glc)
-syntaxchart.printChart(glc.terminals, glc.nonTerminals, chart)
+chart = syntax_chart.createChart(glc)
+syntax_chart.printChart(glc.terminals, glc.nonTerminals, chart)
 #syntaxtchart.parse("(a+a)*a", chart, glc)
-syntaxchart.parse("( a ) * ( a + a )", chart, glc)
+syntax_chart.parse("( a ) * ( a + a )", chart, glc)
 #syntaxtchart.parse("a", chart, glc)
