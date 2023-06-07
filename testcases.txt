@@ -31,7 +31,12 @@ glc.followingS = {
     'G': ['+', '$', ')'],
     'F': ['*', '+', '$', ')'] 
     }
-
-
+correct sentence samples:
+( a + a ) * a 
+syntax_chart.parse("( a + a ) * a", chart, glc)
+( a ) * ( a + a )
+syntax_chart.parse("( a ) * ( a + a )", chart, glc)
+a
+syntax_chart.parse("a", chart, glc)
 
 
