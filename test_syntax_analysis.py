@@ -21,6 +21,15 @@ print("Firsts:", glc.firstS)
 
 chart = syntax_chart.createChart(glc)
 syntax_chart.printChart(glc.terminals, glc.nonTerminals, chart)
+
+#test sentences for parser
 syntax_chart.parse("( a + a ) * a", chart, glc)
 syntax_chart.parse("( a ) * ( a + a )", chart, glc)
 syntax_chart.parse("a", chart, glc)
+
+syntax_chart.parse("a + + a", chart, glc)
+syntax_chart.parse("( a ) *", chart, glc)
+syntax_chart.parse("", chart, glc)
+syntax_chart.parse("bc", chart, glc)
+
+
