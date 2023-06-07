@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 class GLC:
     def __init__(self,initial):
         self.initial = initial
@@ -20,9 +22,9 @@ class GLC:
             self.nonTerminals.append(variable)
 
         for c in production.split():
-            if c[0].isupper() and not c in self.nonTerminals:
+            if c[0].isupper() and c not in self.nonTerminals:
                 self.nonTerminals.append(c)
-            else:
+            elif not c[0].isupper() or c ==  "λ": #and not c in self.nonTerminals:
                 self.terminals.append(c)
         
     def addOnlyTerminalsProductions(self):
@@ -103,8 +105,7 @@ class GLC:
         for key in keys_to_remove:
             del self.productions[key]
             self.nonTerminals.remove(key)
-    
-            
+
     def print_productions(self):
         for variable in self.productions.keys():
             print(variable + " -> " + " | ".join(self.productions[variable]))
@@ -114,7 +115,7 @@ class GLC:
 
     def get_first(self):
         for production_key in self.productions.keys():
-            self.firstS[production_key] = set(self.first(production_key))
+            self.firstS[production_key] = self.remove_duplicates(self.first(production_key))
         return self.firstS
 
     def first(self, key):
@@ -129,28 +130,25 @@ class GLC:
             if not auxList1[i] in self.nonTerminals:  #si es un terminal
                 aux.append(auxList1[i])
             else:
-                while 'λ' in self.first(auxList1[i]) and i < (tam -1):
-                    auxList = self.first(auxList1[i])
-                    auxList.remove('λ')
-                    aux += auxList
-                    i += 1
+                if auxList1[i] != key:   #Se aumento esto para el caso de posible recursividad, aunque no debiera ocurrir
+                    while "λ" in self.first(auxList1[i]) and i < (tam -1):
+                        auxList = self.first(auxList1[i])
+                        auxList.remove("λ")
+                        aux += auxList
+                        i += 1
 
-                aux = aux + self.first(auxList1[i])
+                    aux = aux + self.first(auxList1[i])
         return aux
-    
-    def add_if_not_exist(self, list, element):
-        if element not in list:
-            list.append(element)
 
     def get_following(self):
         for production_key in self.productions.keys():
-            print("KEY: " + production_key)
-            self.followingS[production_key] = set(self.following(production_key))
+            #print("KEY: " + production_key)
+            self.followingS[production_key] = self.remove_duplicates(self.following(production_key,production_key))
         return self.followingS
         
     
-    def following(self, key):
-        print(key)
+    def following(self, key, initialKey):
+        #print(key)
         aux = []
         if key == self.initial:
             aux = ["$"]
@@ -168,27 +166,30 @@ class GLC:
                                                              #en donde se encuentra key. Se hace el ciclo para el caso donde aparezca la misma letra varias veces
                                                              #en la misma producción
                         if index == tam - 1:
-                            if(key != noTerminal):
+                            if key != noTerminal and noTerminal != initialKey:   #
                                 if noTerminal in self.followingS:
                                     aux += self.followingS[noTerminal]
                                 else:
-                                    aux += self.following(noTerminal)
+                                    aux += self.following(noTerminal,initialKey)
                         else:
                             if elementList[index + 1] in self.nonTerminals:
                                 first = self.firstS[elementList[index + 1]]
                                 if 'λ' in first:
                                     first.remove('λ')
                                     aux += first
-                                    if(key != noTerminal):
+                                    if key != noTerminal and noTerminal != initialKey:  #
                                         if noTerminal in self.followingS:
                                             aux += self.followingS[noTerminal]
                                         else:
-                                            aux += self.following(noTerminal)
+                                            aux += self.following(noTerminal,initialKey)
                                 else: 
                                     aux += first
                             else:
                                 aux.append(elementList[index + 1])
         return aux
+    
+    def remove_duplicates(self, lst):
+        return list(OrderedDict.fromkeys(lst))
     
     def eliminate_indirect_left_recursion(self):
         variables = self.nonTerminals.copy()
@@ -209,9 +210,6 @@ class GLC:
                         else:
                             new_productions.append(production_i)
                     self.productions[variable_i] = new_productions
-
-    def add_terminal(self, terminal):
-        self.terminals.append(terminal)
     
     def del_productions(self, variable):
         if variable in self.productions:
@@ -332,8 +330,8 @@ class GLC:
             productions[variable] = rules
         return productions
 
-grammar = GLC("S")
-
+#grammar = GLC("S")
+'''
 grammar.add_production("S", "aux S beta")  #Reemplazar producción por DB si se quiere probar que si añade 'λ' a los primeros de S
 grammar.add_production("S", "coca S E")
 grammar.add_production("S", "aux beta")
@@ -347,6 +345,7 @@ print("--------------------------------------")
 print("Segunda Fase:")
 grammar.second_phase()
 grammar.print_productions()
+'''
 
 print("--------------------------------------")
 print("NUESTRA GRAMÁTICA")
@@ -455,7 +454,8 @@ grammar4.add_production("K'", "🜌 a")
 grammar4.add_production("K'", "🜌 r")
 grammar4.add_production("L'", "🜋 W 🜋")
 grammar4.add_production("L'", "🜋 V 🜋")
-#grammar4.print_productions()
+
+grammar4.print_productions()
 
 print("----------------------------------")
 
@@ -465,13 +465,10 @@ grammar4.left_factoring()
 #grammar4.eliminate_indirect_left_recursion()
 grammar4.eliminate_left_recursion()
 grammar4.print_productions()
-#print("------------------------------------------")
-#grammar4.firstPhase()
-#grammar4.print_productions()
-#print("------------------------------------------")
-#grammar4.second_phase()
-#grammar4.print_productions()
+print("------------------------------------------")
+print("PRIMEROS")
 print(grammar4.get_first())
+print("SIGUIENTES")
 print(grammar4.get_following())
 
 """
@@ -481,3 +478,18 @@ print(grammar4.get_first())
 print("SIGUIENTES")
 print(grammar4.get_following())
 """
+'''
+
+grammar = GLC("A")
+grammar.add_production("A", "B C")
+grammar.add_production("C", "+ B C")
+grammar.add_production("C", "λ")
+grammar.add_production("B", "F G")
+grammar.add_production("G", "* F G")
+grammar.add_production("G", "λ")
+grammar.add_production("F", "a")
+grammar.add_production("F", "( A )")
+grammar.print_productions()
+print(grammar.get_first())
+print(grammar.get_following())
+'''
