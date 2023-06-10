@@ -34,10 +34,12 @@ def AFNLambdaAFN(afnlambda):
         clausuras.append(ObtenerClausura(i, afnlambda))  
         
     #endregion
-
+    '''
     for i in range(0, numeroEstados):
         print(i, ", clausura:", clausuras[i])
     print("\n")
+    '''
+    
     #crear nuevo alfabeto sin lambda
     nuevoalfabeto = []
     for i in range(0, len(afnlambda.alfabeto)-1):
@@ -47,7 +49,7 @@ def AFNLambdaAFN(afnlambda):
     nuevoautomata = AFN(numeroEstados, nuevoalfabeto, [0])
     nuevoautomata.EstadoFinal = afnlambda.EstadoFinal
 
-    nuevoautomata.Mostrar()
+    #nuevoautomata.Mostrar()
     for i in range(0, numeroEstados): # i = q0
         for j in range(0, len(afnlambda.alfabeto)-1): #j = a
             #∆′(q0, a) = λ[∆(λ[q0], a)]
@@ -58,9 +60,9 @@ def AFNLambdaAFN(afnlambda):
                     nuevovalor = afnlambda.tabla[valordeclausuras][j][l]
                     if(ValueinList(nuevovalor, delta) == False):
                         delta.append(nuevovalor )
-            print("i =", i)
-            print("alfabeto:", afnlambda.alfabeto[j])
-            print(delta, "\n")
+            #print("i =", i)
+            #print("alfabeto:", afnlambda.alfabeto[j])
+            #print(delta, "\n")
             #λ[∆]
             nuevarelacion = []
             for k in range(0, len(delta)):
