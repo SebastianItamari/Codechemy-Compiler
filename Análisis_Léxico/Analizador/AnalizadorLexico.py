@@ -27,7 +27,14 @@ class AnalizadorLexico:
         self.patron_alie = r'alie'
         self.patron_comment = r'🜌'
         self.patron_se = r'se'
+        self.patron_For = r'por'
+        self.patron_While = r'dum'
+        self.patron_Delimitador = r'🜚'
+        self.patron_Break = r'rompi'
+        self.patron_Return = r'reveni'
         self.patron_funkcio= r'funkcio'
+        self.patron_Parentesis_Apertura = r'☾'
+        self.patron_Parentesis_Cierre = r'☽'
         self.patron_Salto_Linea = r'\n'
         self.patron_Espacio_Blanco = r'([\t\r\f\v\s])'
         self.tokens = []
@@ -65,6 +72,26 @@ class AnalizadorLexico:
                 identificador = re.match(self.patron_simbolo_funcion, codigo_fuente).group()
                 self.tokens.append(('🜛', identificador, self.linea))
                 codigo_fuente = re.sub(self.patron_simbolo_funcion, '', codigo_fuente, count=1)
+            elif re.match(self.patron_For, codigo_fuente):
+                por = re.match(self.patron_For, codigo_fuente).group()
+                self.tokens.append(('por', por, self.linea))
+                codigo_fuente = re.sub(self.patron_For, '', codigo_fuente, count=1)
+            elif re.match(self.patron_While, codigo_fuente):
+                dum = re.match(self.patron_While, codigo_fuente).group()
+                self.tokens.append(('dum', dum, self.linea))
+                codigo_fuente = re.sub(self.patron_While, '', codigo_fuente, count=1)
+            elif re.match(self.patron_Delimitador, codigo_fuente):
+                delimitador = re.match(self.patron_Delimitador, codigo_fuente).group()
+                self.tokens.append(('🜚', delimitador, self.linea))
+                codigo_fuente = re.sub(self.patron_Delimitador, '', codigo_fuente, count=1)
+            elif re.match(self.patron_Break, codigo_fuente):
+                rompi = re.match(self.patron_Break, codigo_fuente).group()
+                self.tokens.append(('rompi', rompi, self.linea))
+                codigo_fuente = re.sub(self.patron_Break, '', codigo_fuente, count=1)
+            elif re.match(self.patron_Return, codigo_fuente):
+                reveni = re.match(self.patron_Return, codigo_fuente).group()
+                self.tokens.append(('reveni', reveni, self.linea))
+                codigo_fuente = re.sub(self.patron_Return, '', codigo_fuente, count=1)
             elif re.match(self.patron_nombre, codigo_fuente):
                 identificador = re.match(self.patron_nombre, codigo_fuente).group()
                 self.tokens.append(('NOMBRE', identificador, self.linea))
@@ -133,6 +160,14 @@ class AnalizadorLexico:
                 tipo = re.match(self.patron_char, codigo_fuente).group()
                 self.tokens.append(('🝮', tipo, self.linea))
                 codigo_fuente = re.sub(self.patron_char, '', codigo_fuente, count=1)
+            elif re.match(self.patron_Parentesis_Apertura, codigo_fuente):
+                parentesis = re.match(self.patron_Parentesis_Apertura, codigo_fuente).group()
+                self.tokens.append(('☾', parentesis, self.linea))
+                codigo_fuente = re.sub(self.patron_Parentesis_Apertura, '', codigo_fuente, count=1)
+            elif re.match(self.patron_Parentesis_Cierre, codigo_fuente):
+                parentesis = re.match(self.patron_Parentesis_Cierre, codigo_fuente).group()
+                self.tokens.append(('☽', parentesis, self.linea))
+                codigo_fuente = re.sub(self.patron_Parentesis_Cierre, '', codigo_fuente, count=1)
             elif re.match(self.patron_Salto_Linea, codigo_fuente):
                 saltoLinea = re.match(self.patron_Salto_Linea, codigo_fuente).group()
                 self.tokens.append(('\n', saltoLinea, self.linea))
@@ -146,8 +181,8 @@ class AnalizadorLexico:
                 identificador = re.match(self.patron_identificador, codigo_fuente).group()
                 self.tokens.append(('IDENTIFICADOR', identificador, self.linea))
                 codigo_fuente = re.sub(self.patron_identificador, '', codigo_fuente, count=1)
-            elif re.match(self.patron_Operador_Logico, codigo_fuente):
-                operador = re.match(self.patron_Operador_Logico, codigo_fuente).group()
+            elif re.match(self.patron_operador_Logico, codigo_fuente):
+                operador = re.match(self.patron_operador_Logico, codigo_fuente).group()
                 self.tokens.append(('OPERADOR LOGICO', operador, self.linea))
                 codigo_fuente = re.sub(self.patron_Operador_Logico, '', codigo_fuente, count=1)
             else:
@@ -176,6 +211,15 @@ codigo = '''
 alie 🝳id🝳 🜔 2
 🜌 se 🝳papa🝳 alie
 🜛 se
+por ☾ ☽
+🜚
+    rompi
+🜚
+dum ☾ ☽
+🜚
+    reveni
+🜚
+
 '''
 analizador = AnalizadorLexico()
 tokens = analizador.analizar(codigo)
