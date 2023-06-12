@@ -6,7 +6,7 @@ class AnalizadorLexico:
         self.patron_identificador = r'\w+'
         self.patron_Operador_Comparacion = r'[🜔🜕🜖🜗🜎🜍]'   
         self.patron_Tipo = r'[🝰🝯🝮]'   
-        self.patron_Key_Word = r'(alie|🜌)'
+        self.patron_Key_Word = r'(alie|🜌|genesis|apocalipsis)'
         self.patron_Salto_Linea = r'\n'
         self.patron_Espacio_Blanco = r'(\t| )'
         self.tokens = []
@@ -52,6 +52,7 @@ class AnalizadorLexico:
     
 # Ejemplo de uso
 codigo = '''
+genesis
 3 🜔 2
 id 🜕 3
 pos 🜖 len
@@ -65,6 +66,7 @@ bebe 🜍 baba
 
 alie id 🜔 2
 🜌 papa alie
+apocalipsis
 '''
 analizador = AnalizadorLexico()
 tokens = analizador.analizar(codigo)
