@@ -4,7 +4,8 @@ class AnalizadorLexico:
     def __init__(self):
         self.patron_numero = r'[-+]?\d+'
         self.patron_identificador = r'\w+'
-        self.patron_operador_Logico = r'[🜓🝘]'
+        self.patron_operador_logico_and = r'🜓'
+        self.patron_operador_logico_or = r'🝘'
         self.patron_simbolo_variable = r'🝳'
         self.patron_simbolo_funcion = r'🜛'
         self.patron_nombre = r'\w+'
@@ -181,10 +182,14 @@ class AnalizadorLexico:
                 identificador = re.match(self.patron_identificador, codigo_fuente).group()
                 self.tokens.append(('IDENTIFICADOR', identificador, self.linea))
                 codigo_fuente = re.sub(self.patron_identificador, '', codigo_fuente, count=1)
-            elif re.match(self.patron_operador_Logico, codigo_fuente):
-                operador = re.match(self.patron_operador_Logico, codigo_fuente).group()
-                self.tokens.append(('OPERADOR LOGICO', operador, self.linea))
-                codigo_fuente = re.sub(self.patron_Operador_Logico, '', codigo_fuente, count=1)
+            elif re.match(self.patron_operador_logico_and, codigo_fuente):
+                operador = re.match(self.patron_operador_logico_and, codigo_fuente).group()
+                self.tokens.append(('🜓', operador, self.linea))
+                codigo_fuente = re.sub(self.patron_operador_logico_and, '', codigo_fuente, count=1)
+            elif re.match(self.patron_operador_logico_or, codigo_fuente):
+                operador = re.match(self.patron_operador_logico_or, codigo_fuente).group()
+                self.tokens.append(('🝘', operador, self.linea))
+                codigo_fuente = re.sub(self.patron_operador_logico_or, '', codigo_fuente, count=1)
             else:
                 print('Error: Carácter no válido encontrado')
                 return
@@ -209,6 +214,10 @@ codigo = '''
     🝮 🝳v🝳
 
 alie 🝳id🝳 🜔 2
+
+alie 🝳id🝳 🜓 2
+alie 🝳id🝳 🝘 2
+
 🜌 se 🝳papa🝳 alie
 🜛 se
 por ☾ ☽
