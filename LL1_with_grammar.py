@@ -1,4 +1,6 @@
-from GLC import GLC
+from Gramática.GLC import GLC
+from Análisis_Sintáctico_LL1.syntax_chart import * 
+
 print("--------------------------------------")
 print("NUESTRA GRAMÁTICA")
 grammar4 = GLC('A')
@@ -118,10 +120,16 @@ grammar4.left_factoring()
 grammar4.eliminate_left_recursion()
 grammar4.print_productions()
 
-"""
-grammar4.print_productions()
+
+#grammar4.print_productions()
 print("PRIMEROS")
 print(grammar4.get_first())
 print("SIGUIENTES")
 print(grammar4.get_following())
-"""
+
+if(differentFirstandFollowing(grammar4.firstS, grammar4.followingS) == False):
+    print("they have elemens in common, not LL1.")
+else:
+    chart = createChart(grammar4)
+    printChart(grammar4.terminals, grammar4.nonTerminals, chart)
+    parse("🝳 a 🝳 🝑 2 🜄 3", chart, grammar4)

@@ -147,7 +147,6 @@ class GLC:
             #print("KEY: " + production_key)
             self.followingS[production_key] = self.remove_duplicates(self.following(production_key,[production_key]))
         return self.followingS
-        
     
     def following(self, key, keysAnalized):
         #print(key)
@@ -194,6 +193,7 @@ class GLC:
     
     def remove_duplicates(self, lst):
         return list(OrderedDict.fromkeys(lst))
+
     
     def eliminate_indirect_left_recursion(self):
         variables = self.nonTerminals.copy()
