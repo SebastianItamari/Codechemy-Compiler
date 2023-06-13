@@ -38,6 +38,12 @@ class AnalizadorLexico:
         self.patron_Parentesis_Cierre = r'☽'
         self.patron_Salto_Linea = r'\n'
         self.patron_Espacio_Blanco = r'([\t\r\f\v\s])'
+        self.patron_inicio_programa = r'🜉'#
+        self.patron_fin_programa = r'🝓'#
+        self.patron_bloque = r'🜸'#
+        self.patron_negacion_bool = r'🝱'#
+        self.patron_parentesis_inicio = r'☾'#
+        self.patron_parentesis_fin = r'☽'#
         self.tokens = []
         self.linea = 1
 
@@ -190,6 +196,30 @@ class AnalizadorLexico:
                 operador = re.match(self.patron_operador_logico_or, codigo_fuente).group()
                 self.tokens.append(('🝘', operador, self.linea))
                 codigo_fuente = re.sub(self.patron_operador_logico_or, '', codigo_fuente, count=1)
+            elif re.match(self.patron_inicio_programa, codigo_fuente):
+                inicio_programa = re.match(self.patron_inicio_programa, codigo_fuente).group()
+                self.tokens.append(('🜉', inicio_programa, self.linea))
+                codigo_fuente = re.sub(self.patron_inicio_programa, '', codigo_fuente, count=1) 
+            elif re.match(self.patron_fin_programa, codigo_fuente):
+                fin_programa = re.match(self.patron_fin_programa, codigo_fuente).group()
+                self.tokens.append(('🝓', fin_programa, self.linea))
+                codigo_fuente = re.sub(self.patron_fin_programa, '', codigo_fuente, count=1) 
+            elif re.match(self.patron_bloque, codigo_fuente):
+                bloque = re.match(self.patron_bloque, codigo_fuente).group()
+                self.tokens.append(('🜸', bloque, self.linea))
+                codigo_fuente = re.sub(self.patron_bloque, '', codigo_fuente, count=1)
+            elif re.match(self.patron_negacion_bool, codigo_fuente):
+                negacion_bool = re.match(self.patron_negacion_bool, codigo_fuente).group()
+                self.tokens.append(('🝱', negacion_bool, self.linea))
+                codigo_fuente = re.sub(self.patron_negacion_bool, '', codigo_fuente, count=1) 
+            elif re.match(self.patron_parentesis_inicio, codigo_fuente):
+                parentesis_inicio = re.match(self.patron_parentesis_inicio, codigo_fuente).group()
+                self.tokens.append(('☾', parentesis_inicio, self.linea))
+                codigo_fuente = re.sub(self.patron_parentesis_inicio, '', codigo_fuente, count=1) 
+            elif re.match(self.patron_parentesis_fin, codigo_fuente):
+                parentesis_fin = re.match(self.patron_parentesis_fin, codigo_fuente).group()
+                self.tokens.append(('☽', parentesis_fin, self.linea))
+                codigo_fuente = re.sub(self.patron_parentesis_fin, '', codigo_fuente, count=1) 
             else:
                 print('Error: Carácter no válido encontrado')
                 return
