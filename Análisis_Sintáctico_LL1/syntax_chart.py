@@ -132,7 +132,21 @@ def parse(sentence, chart, glc):
         print("The sentence is syntactically correct.")
     '''
 
-        
+def differentFirstandFollowing(firsts, followings):
+    different = True
+    for x in firsts:
+        firstset = set(firsts[x])
+        followingset = set(followings[x])
+        if(firstset & followingset):
+            different = False 
+            print("Nonterminal with repeated elements: "+x)
+            print("Firsts: ",firstset)
+            print("Followings: ",followingset)
+            break 
+    return different 
+
+
+
 
 
 
