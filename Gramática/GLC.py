@@ -144,10 +144,11 @@ class GLC:
     def get_following(self):
         for production_key in self.productions.keys():
             #print("KEY: " + production_key)
-            self.followingS[production_key] = self.remove_duplicates(self.following(production_key,production_key))
+            self.followingS[production_key] = self.remove_duplicates(self.following(production_key,[production_key]))
         return self.followingS
-        
     
+    
+    '''
     def following(self, key, initialKey):
         #print(key)
         aux = []
@@ -189,8 +190,54 @@ class GLC:
                                 aux.append(elementList[index + 1])
         return aux
     
+    '''
+    
+    def following(self, key, keysAnalized):
+        #print(key)
+        aux = []
+        if key == self.initial:
+            aux = ["$"]
+
+        for noTerminal in self.productions:
+            list = self.productions[noTerminal]
+            for element in list:
+                elementList = element.split()
+                tam = len(elementList)
+                for index, letter in enumerate(elementList):
+                    if key == letter:
+                        #print(key,noTerminal,elementList,index)  #key es la llave (no terminal del que se quiere sacar siguientes), 
+                                                             #no Terminal es en el noTerminal que se encuenta key en el conjunto de producciones,
+                                                             #element es la producción en la cual se encuentra key y index es el índice en la producción
+                                                             #en donde se encuentra key. Se hace el ciclo para el caso donde aparezca la misma letra varias veces
+                                                             #en la misma producción
+                        if index == tam - 1:
+                            if key != noTerminal and not noTerminal in keysAnalized:   #
+                                if noTerminal in self.followingS:
+                                    aux += self.followingS[noTerminal]
+                                else:
+                                    keysAnalized.append(noTerminal)
+                                    aux += self.following(noTerminal,keysAnalized)
+                        else:
+                            if elementList[index + 1] in self.nonTerminals:
+                                first = self.firstS[elementList[index + 1]].copy()
+                                if 'λ' in first:
+                                    first.remove('λ')
+                                    aux += first
+                                    if key != noTerminal and not noTerminal in keysAnalized:  #
+                                        if noTerminal in self.followingS:
+                                            aux += self.followingS[noTerminal]
+                                        else:
+                                            keysAnalized.append(noTerminal)
+                                            aux += self.following(noTerminal,keysAnalized)
+                                else: 
+                                    aux += first
+                            else:
+                                aux.append(elementList[index + 1])
+        return aux
+    
     def remove_duplicates(self, lst):
         return list(OrderedDict.fromkeys(lst))
+
     
     def eliminate_indirect_left_recursion(self):
         variables = self.nonTerminals.copy()
