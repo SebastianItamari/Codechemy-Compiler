@@ -1,6 +1,7 @@
-from Item import *
-from GLC import *
+from .Item import *
+from .GLC import *
 from copy import *
+from collections import OrderedDict
 
 class SLR:
     def __init__(self,grammar):

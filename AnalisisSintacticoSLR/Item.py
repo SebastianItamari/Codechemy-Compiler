@@ -1,4 +1,4 @@
-from GLC import *
+from .GLC import *
 from collections import OrderedDict
 from copy import *
 
