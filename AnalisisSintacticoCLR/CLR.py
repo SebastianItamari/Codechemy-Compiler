@@ -1,6 +1,6 @@
-from ItemCLR import *
-from GrammarCLR import *
-from GLC import *
+from .ItemCLR import *
+from .GrammarCLR import *
+from .GLC import *
 from copy import *
 
 class CLR:

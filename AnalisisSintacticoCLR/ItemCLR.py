@@ -1,6 +1,6 @@
 from copy import *
-from GLC import *
-from GrammarCLR import *
+from .GLC import *
+from .GrammarCLR import *
 
 class ItemCLR:
     def __init__(self, name, originalGrammar, firstSOG, grammar):
