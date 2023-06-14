@@ -27,6 +27,8 @@ grammar.add_production("Condition", "Expression 🜕 Expression")
 grammar.add_production("Condition", "Expression 🜔 Expression")
 grammar.add_production("Condition", "Expression 🜗 Expression")
 grammar.add_production("Condition", "Expression 🜖 Expression")
+grammar.add_production("Statement", "WhileLoop")
+grammar.add_production("WhileLoop", "dum ☾ Condition ☽ s 🜚 s Program 🜚")
 
 grammar.print_productions()
 
@@ -62,7 +64,8 @@ else:
     parse("🜉 s 🝳 identifier 🝳 🝑 constant s 🝳 identifier 🝳 🝑 constant s 🝓", chart, grammar)
     parse("🜉 s 🝓", chart, grammar)
     parse("🜉 s se ☾ 🝳 identifier 🝳 🜕 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant s 🜚 s 🝓", chart, grammar)
-
+    parse("🜉 s dum ☾ constant 🜍 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant 🜁 constant s 🜚 s 🝓", chart, grammar)
+    parse("🜉 s dum ☾ constant 🜍 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant 🜁 constant s 🜚 s 🝓", chart, grammar)
 
 '''
 grammar.add_production("Start", "🜉 s")
