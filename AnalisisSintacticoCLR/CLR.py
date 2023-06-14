@@ -1,7 +1,11 @@
-from ItemCLR import *
-from GrammarCLR import *
-from GLC import *
+#standard library imports
 from copy import *
+
+#local application imports
+from .ItemCLR import *
+from .GrammarCLR import *
+from Gramática.GLC import *
+
 
 class CLR:
     def __init__(self,grammar):

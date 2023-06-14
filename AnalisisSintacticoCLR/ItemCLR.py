@@ -1,6 +1,9 @@
+#standard library imports
 from copy import *
-from GLC import *
-from GrammarCLR import *
+
+#local application imports
+from .GrammarCLR import *
+from Gramática.GLC import * 
 
 class ItemCLR:
     def __init__(self, name, originalGrammar, firstSOG, grammar):

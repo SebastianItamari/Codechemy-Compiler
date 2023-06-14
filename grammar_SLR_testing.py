@@ -1,4 +1,5 @@
-from AnalisisSintacticoSLR.GLC import GLC
+#local application imports
+from Gramática.GLC import GLC
 from AnalisisSintacticoSLR.Item import Item
 from AnalisisSintacticoSLR.SLR import SLR 
 
