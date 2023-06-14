@@ -1,5 +1,7 @@
+#standard library imports
 from collections import OrderedDict
 from copy import *
+#import inspect #
 
 class GLC:
     def __init__(self,initial):
@@ -9,6 +11,8 @@ class GLC:
         self.productions = {}
         self.firstS = {}
         self.followingS = {}
+        #print("Hello there! Im being called from:", inspect.stack()[1].filename)###
+        #to check where this class is being called form
 
     def add_production(self, variable, production):
         if variable in self.productions:
