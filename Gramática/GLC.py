@@ -26,7 +26,7 @@ class GLC:
 
             if c[0].isupper() and c not in self.nonTerminals:
                 self.nonTerminals.append(c)
-            elif not c[0].isupper() or c ==  "λ": #and not c in self.nonTerminals:
+            elif not c[0].isupper() or c ==  "λ" and not c in self.nonTerminals:
                 self.terminals.append(c) 
        
     def addOnlyTerminalsProductions(self):
@@ -218,8 +218,8 @@ class GLC:
     def del_productions(self, variable):
         if variable in self.productions:
             del self.productions[variable]
-            if variable in self.noTerminals:
-                self.noTerminals.remove(variable)
+            if variable in self.nonTerminals:
+                self.nonTerminals.remove(variable)
 
     def eliminate_left_recursion(self):
         variables = list(self.productions.keys())
@@ -320,7 +320,7 @@ class GLC:
 
         self.productions = self.transform_to_productions(new_productions)
         self.terminals = new_terminals
-        self.noTerminals = new_noTerminals
+        self.nonTerminals = new_noTerminals
 
     def transform_to_productions(self, new_productions):
         productions = {}
