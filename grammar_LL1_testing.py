@@ -8,6 +8,7 @@ grammar.add_production("Start", "🜉 s Program 🝓")
 grammar.add_production("Program", "Statement s Program")
 grammar.add_production("Program", "λ")
 grammar.add_production("Statement", "Assignment")
+grammar.add_production("Statement", "IfStatement")
 grammar.add_production("Assignment", "🝳 identifier 🝳 🝑 Expression")
 grammar.add_production("Expression", "Term Expression\'")
 grammar.add_production("Expression\'", "🜂 Term")
@@ -17,6 +18,15 @@ grammar.add_production("Expression\'", "🜄 Term")
 grammar.add_production("Expression\'", "λ")
 grammar.add_production("Term", "🝳 identifier 🝳")
 grammar.add_production("Term", "constant")
+grammar.add_production("IfStatement", "se ☾ Condition ☽ s 🜚 s Program 🜚")
+#grammar.add_production("IfStatement\'", "s alie s 🜚 s Program s 🜚")
+#grammar.add_production("IfStatement\'", "λ")
+grammar.add_production("Condition", "Expression 🜎 Expression")
+grammar.add_production("Condition", "Expression 🜍 Expression")
+grammar.add_production("Condition", "Expression 🜕 Expression")
+grammar.add_production("Condition", "Expression 🜔 Expression")
+grammar.add_production("Condition", "Expression 🜗 Expression")
+grammar.add_production("Condition", "Expression 🜖 Expression")
 
 grammar.print_productions()
 
@@ -51,6 +61,7 @@ else:
     printChart(grammar.terminals, grammar.nonTerminals, chart)
     parse("🜉 s 🝳 identifier 🝳 🝑 constant s 🝳 identifier 🝳 🝑 constant s 🝓", chart, grammar)
     parse("🜉 s 🝓", chart, grammar)
+    parse("🜉 s se ☾ 🝳 identifier 🝳 🜕 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant s 🜚 s 🝓", chart, grammar)
 
 
 '''
