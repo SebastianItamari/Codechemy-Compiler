@@ -1,7 +1,13 @@
-from .Item import *
-from .GLC import *
-from copy import *
+#standard library imports
 from collections import OrderedDict
+from copy import *
+
+#local application imports
+from .Item import *
+from Gramática.GLC import GLC
+
+
+
 
 class SLR:
     def __init__(self,grammar):

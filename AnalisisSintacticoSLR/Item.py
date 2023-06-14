@@ -1,6 +1,10 @@
-from .GLC import *
+#standard library imports
 from collections import OrderedDict
 from copy import *
+
+#local application imports
+from Gramática.GLC import *
+
 
 class Item:
     def __init__(self,name,originalGrammar,grammar):
