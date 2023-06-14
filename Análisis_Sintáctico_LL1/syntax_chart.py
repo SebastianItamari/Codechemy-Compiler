@@ -21,11 +21,13 @@ def createChart(glc):
                 foundProduction = False
                 for production in productions:
                     #now production is a single production
+                    listproduction = production.split() 
+                    #listproduction is each symbol of a production as a list
                     donewithFirsts = False
                     n = 0 #position in production
                     while(donewithFirsts == False and production != 'λ'):
                         donewithFirsts = True 
-                        productionFirsts = glc.first(production[n]) 
+                        productionFirsts = glc.first(listproduction[n]) 
                         for productionFirst in productionFirsts:
                             if(productionFirst != 'λ' and productionFirst == currentfirst):
                                 donewithFirsts = True 

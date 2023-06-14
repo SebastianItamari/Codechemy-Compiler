@@ -1,9 +1,42 @@
+#local application imports
 from Gramática.GLC import GLC
 from Análisis_Sintáctico_LL1.syntax_chart import * 
 
 print("Análisis para la Gramática - LL1")
 grammar = GLC('Start')
+grammar.add_production("Start", "🜉 s Program 🝓")
+grammar.add_production("Program", "Statement s Program")
+grammar.add_production("Program", "λ")
+grammar.add_production("Statement", "Assignment")
+grammar.add_production("Assignment", "🝳 identifier 🝳 _ 🝑 _ expression")
 
+grammar.print_productions()
+
+print("----------------------------------")
+
+#grammar.firstPhase()
+#grammar.second_phase()
+#grammar.left_factoring()
+#grammar.eliminate_left_recursion()
+#grammar.print_productions()
+
+grammar.terminals = grammar.remove_duplicates(grammar.terminals)
+
+print("PRIMEROS")
+print(grammar.get_first())
+print("SIGUIENTES")
+print(grammar.get_following())
+
+if(differentFirstandFollowing(grammar.firstS, grammar.followingS) == False):
+    print("Firsts and Followings have elements in common, not LL1.")
+else:
+    chart = createChart(grammar)
+    printChart(grammar.terminals, grammar.nonTerminals, chart)
+    parse("🜉 s 🝳 identifier 🝳 _ 🝑 _ expression s 🝳 identifier 🝳 _ 🝑 _ expression s 🝓", chart, grammar)
+    parse("🜉 s 🝓", chart, grammar)
+
+
+'''
 grammar.add_production("Start", "🜉 s")
 grammar.add_production("Start", "Program s")
 grammar.add_production("Start", "🝓")
@@ -24,7 +57,7 @@ grammar.add_production("IfStatement", "🜚 s")
 grammar.add_production("IfStatement", "Program s")
 grammar.add_production("IfStatement", "🜚")
 #grammar.add_production("IfStatement", "se _ ☾ Condition ☽  s")
-grammar.add_production("IfStatement", "🜚  s")
+#grammar.add_production("IfStatement", "🜚  s")
 #grammar.add_production("IfStatement", "Program s")
 #grammar.add_production("IfStatement", "🜚  s")
 grammar.add_production("IfStatement", " alie s")
@@ -55,28 +88,9 @@ grammar.add_production("Condition", "Expression _ 🜕 _ Expression")
 grammar.add_production("Condition", "Expression _ 🜔 _ Expression")
 grammar.add_production("Condition", "Expression _ 🜗 _ Expression")
 grammar.add_production("Condition", "Expression _ 🜖 _ Expression")
+'''
 
-grammar.print_productions()
 
-print("----------------------------------")
-
-#grammar.firstPhase()
-#grammar.second_phase()
-#grammar.left_factoring()
-#grammar.eliminate_left_recursion()
-#grammar.print_productions()
-
-print("PRIMEROS")
-print(grammar.get_first())
-print("SIGUIENTES")
-print(grammar.get_following())
-
-if(differentFirstandFollowing(grammar.firstS, grammar.followingS) == False):
-    print("Firsts and Followings have elements in common, not LL1.")
-else:
-    chart = createChart(grammar)
-    printChart(grammar.terminals, grammar.nonTerminals, chart)
-    parse("🝳 a 🝳 🝑 2 🜄 3", chart, grammar)
 
 '''
 print("--------------------------------------")
