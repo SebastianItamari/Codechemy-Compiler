@@ -50,26 +50,3 @@ class Item:
 
     def remove_duplicates(self, lst):
         return list(OrderedDict.fromkeys(lst))
-
-'''
-grammar = GLC("E")
-grammar.add_production("E","E + T")
-grammar.add_production("E","T")
-grammar.add_production("T","T * F")
-grammar.add_production("T","F")
-grammar.add_production("F","( E )")
-grammar.add_production("F","id")
-
-grammar1 = GLC("E'")
-grammar1.add_production("F","( . E )")
-
-item = Item("I1",grammar,grammar1)
-item.closing([])
-print("GRAMMATICA ORIGINAL")
-item.originalGrammar.print_productions()
-print("GRAMMATICA DEL ITEM")
-item.grammar.print_productions()
-print("ELEMENTOS DEL GOTO")
-for item in item.elements():
-    print(item)
-'''
