@@ -132,8 +132,8 @@ class SLR:
                     print("------------------------")
                     self.table = {}
                     return
-        grammar.get_first()
-        followingS = grammar.get_following()
+        self.grammar.get_first()
+        followingS = self.grammar.get_following()
         self.fillReduceTable(followingS)
 
     def identifyFinishedProductions(self,item,followingS):
