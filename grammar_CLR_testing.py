@@ -1,5 +1,5 @@
 from AnalisisSintacticoCLR.GLC import GLC
-from AnalisisSintacticoCSLR.Item import Item
+from AnalisisSintacticoSLR.Item import Item
 from AnalisisSintacticoCLR.CLR import CLR 
 from AnalisisSintacticoCLR.GrammarCLR import GrammarCRL
 

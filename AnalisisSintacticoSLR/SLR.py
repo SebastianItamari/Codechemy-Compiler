@@ -132,8 +132,8 @@ class SLR:
                     print("------------------------")
                     self.table = {}
                     return
-        grammar.get_first()
-        followingS = grammar.get_following()
+        self.grammar.get_first()
+        followingS = self.grammar.get_following()
         self.fillReduceTable(followingS)
 
     def identifyFinishedProductions(self,item,followingS):
@@ -358,7 +358,7 @@ grammar.add_production("ComentarioSimple","🜌 reveni")
 grammar.add_production("ComentarioBloque","🜋 ListaSentenciaFuncion 🜋") 
 grammar.add_production("ComentarioBloque","🜋 ListaSentenciaCiclo 🜋")
 '''
-'''
+"""
 grammar = GLC("Program")
 grammar.add_production("Program", "Statement")
 grammar.add_production("Program", "Statement Program")
@@ -378,6 +378,19 @@ grammar.add_production("Expression", "Expression + Expression")
 grammar.add_production("Expression", "Expression / Expression")
 grammar.add_production("Expression", "Expression * Expression")
 grammar.add_production("Expression", "Expression - Expression")
+'''
+grammar.add_production("Expression", "Term Expression'")
+grammar.add_production("Expression'", "+ Term Expression'")
+grammar.add_production("Expression'", "- Term Expression'")
+grammar.add_production("Expression'", "λ")
+grammar.add_production("Term", "Factor Term'")
+grammar.add_production("Term'", "* Factor Term'")
+grammar.add_production("Term'", "/ Factor Term'")
+grammar.add_production("Term'", "λ")
+grammar.add_production("Factor", "identifier")
+grammar.add_production("Factor", "constant")
+grammar.add_production("Factor", "( Expression )")
+'''
 grammar.add_production("Condition", "Expression == Expression")
 grammar.add_production("Condition", "Expression != Expression")
 grammar.add_production("Condition", "Expression < Expression")
@@ -385,8 +398,39 @@ grammar.add_production("Condition", "Expression > Expression")
 grammar.add_production("Condition", "Expression <= Expression")
 grammar.add_production("Condition", "Expression >= Expression")
 
+"""
+grammar = GLC("Program")
+grammar.add_production("Program", "🜉 Statement 🝓")
+grammar.add_production("Program", "🜉 Statement Program 🝓")
+grammar.add_production("Statement", "Assignment")
+grammar.add_production("Statement", "IfStatement")
+grammar.add_production("Statement", "WhileLoop")
+grammar.add_production("Statement", "ForLoop") 
+grammar.add_production("Assignment", "identifier 🝑 Expression ;")
+grammar.add_production("IfStatement", "se ☾ Condition ☽ 🜚 Program 🜚")
+grammar.add_production("IfStatement", "se ☾ Condition ☽ 🜚 Program 🜚 alie 🜚 Program 🜚")
+grammar.add_production("WhileLoop", "dum ☾ Condition ☽ 🜚 Program 🜚")
+grammar.add_production("AssignmentFor", "identifier 🝑 Expression")   
+grammar.add_production("ForLoop", "por ☾ AssignmentFor ; Condition ; AssignmentFor ☽ 🜚 Program 🜚")  #
+grammar.add_production("Expression", "identifier")
+grammar.add_production("Expression", "constant")
+grammar.add_production("Expression", "Expression 🜂 Expression")
+grammar.add_production("Expression", "Expression 🜃 Expression")
+grammar.add_production("Expression", "Expression 🜁 Expression")
+grammar.add_production("Expression", "Expression 🜄 Expression")
+grammar.add_production("Condition", "Expression 🜎  Expression")
+grammar.add_production("Condition", "Expression 🜍 Expression")
+grammar.add_production("Condition", "Expression 🜕 Expression")
+grammar.add_production("Condition", "Expression 🜔 Expression")
+grammar.add_production("Condition", "Expression 🜗 Expression")
+grammar.add_production("Condition", "Expression 🜖 Expression")
+
 grammar.print_productions()
-'''
+
+analisis = SLR(grammar)
+analisis.buildTable()
+
+analisis.analyze("🜉 identifier 🝑 constant ; 🝓")
 '''
 grammar = GLC("E")
 grammar.add_production("E", "T")
@@ -401,13 +445,3 @@ analisis.buildTable()
 analisis.printItems()
 analisis.printTable()
 '''
-
-analisis = SLR(grammar)
-analisis.buildTable()
-#analisis.printTable()
-#analisis.analyze("if ( identifier == constant ) { constant ; }")
-#analisis.analyze("if ( identifier == constant ) { identifier = constant ; }")
-#analisis.analyze("if ( identifier == constant ) { identifier = identifier * constant + constant ; }")
-#analisis.analyze("while ( identifier > constant ) { identifier = constant / constant - identifier ; identifier = constant ; }")
-#analisis.analyze("while ( identifier > constant ) { if ( identifier != constant ) { identifier = constant ; } }")
-#analisis.analyze("for ( identifier = constant ; identifier >= constant ; identifier = identifier + constant ) { if ( identifier != constant ) { identifier = constant ; } else { identifier = constant * constant ; } }")
