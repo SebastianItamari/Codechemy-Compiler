@@ -100,6 +100,7 @@ class AnalizadorLexico:
         except Exception as lexicalError:
             caracter, linea = lexicalError.args
             print(f"Error léxico en la línea {linea}. Caracter inválido '{caracter}'")
+            exit()
         
     
     def matchPattern(self, pattern, codigo_fuente, token):
