@@ -10,7 +10,7 @@ class ItemCLR:
         self.name = name
         self.originalGrammar = originalGrammar #GLC
         self.firstSOG = firstSOG
-        self.nonClosingGrammar = grammar #GrammarCLR
+        self.nonClosingGrammar = deepcopy(grammar) #GrammarCLR
         self.grammar = deepcopy(grammar) #GrammarCLR
 
     def closing(self,added):
@@ -74,43 +74,3 @@ class ItemCLR:
     def remove_Duplicates_List(self, lst):
         return list(OrderedDict.fromkeys(lst))
 
-'''
-grammar = GLC("S")
-grammar.add_production("S", "L = R")
-grammar.add_production("S", "R")
-grammar.add_production("L", "* R")
-grammar.add_production("L", "identificador")
-grammar.add_production("R", "L")
-grammar.print_productions()
-
-print("--------------------------")
-
-grammarCLR = GrammarCRL()
-grammarCLR.add_production("S'",(". S",["$"]))
-grammarCLR.print_productions()
-
-print("--------------------------")
-item = ItemCLR("I1",grammar,grammar.get_first(),grammarCLR)
-item.closing([])
-item.grammar.print_productions()
-'''
-'''
-grammar = GLC("L")
-grammar.add_production("L", "L , I")
-grammar.add_production("L", "inicio I")
-grammar.add_production("I", "item")
-grammar.add_production("I", "id")
-grammar.add_production("I", "num")
-grammar.print_productions()
-
-print("--------------------------")
-
-grammarCLR = GrammarCRL()
-grammarCLR.add_production("L'",(". L",["$"]))
-grammarCLR.print_productions()
-
-print("--------------------------")
-item = ItemCLR("I1",grammar,grammar.get_first(),grammarCLR)
-item.closing([])
-item.grammar.print_productions()
-'''

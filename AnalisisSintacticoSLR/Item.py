@@ -10,7 +10,7 @@ class Item:
     def __init__(self,name,originalGrammar,grammar):
         self.name = name
         self.originalGrammar = originalGrammar
-        self.nonClosingGrammar = grammar
+        self.nonClosingGrammar = deepcopy(grammar)
         self.grammar = deepcopy(grammar)
 
     def closing(self,added):

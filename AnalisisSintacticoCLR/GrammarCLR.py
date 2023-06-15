@@ -20,22 +20,3 @@ class GrammarCRL:
             production_str = key + " -> "
             production_str += " | ".join([prod[0] + " " +str(prod[1]) for prod in value])
             print(production_str)
-
-'''
-prueba = GrammarCRL()
-prueba.add_production("L",("o R s",["$"]))
-prueba.add_production("L",("a B",["$"]))
-prueba.add_production("L",("a B", ["a","b","d","$"]))
-prueba.add_production("S",("o R s",["$"]))
-prueba.print_productions()
-'''
-'''
-prueba1 = GrammarCRL()
-prueba1.add_production("L'",(". L",["$"]))
-prueba1.add_production("L",(". L , I",["$"]))
-prueba1.add_production("L",(". inicio I",["$"]))
-prueba1.add_production("L",(". L , I",[","]))
-prueba1.add_production("L",(". inicio I",[","]))
-prueba1.print_productions()
-print(prueba1.productions)
-'''

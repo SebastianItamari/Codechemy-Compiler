@@ -52,16 +52,30 @@ dum ☾🝳nombre🝳 🜗 -20☽
 🜚
 🝓'''
 
+
 codigo3 = '''🜉
-🝳var🝳 🝑 0
+🝳var🝳 🝑 0;
 por ☾🝳nombre🝳 🝑 0; 🝳nombre🝳 🜗 -20; 🝳nombre🝳 🝑 🝳nombre🝳 🜂 1☽
 🜚
-🝳var🝳 🝑 🝳var🝳 🜂 10
+🝳var🝳 🝑 🝳var🝳 🜂 10;
+se ☾🝳id🝳 🜎 10☽
+🜚
+🝳id🝳 🝑 -5;
+🜚
+alie
+🜚
+🝳var🝳 🝑 🝳var🝳 🜂 10;
+🜚
+🜚
+dum ☾🝳nombre🝳 🜗 -20☽
+🜚
+🝳var🝳 🝑 🝳var🝳 🜂 10 🜄 🝳nombre🝳;
 🜚
 🝓'''
 
+
 analizador = AnalizadorLexico()
-tokens = analizador.analizar(codigo3)
+tokens = analizador.analizar(codigo2)
 for token in tokens:
     print(token)
 

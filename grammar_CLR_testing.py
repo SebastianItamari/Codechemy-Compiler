@@ -4,6 +4,7 @@ from AnalisisSintacticoCLR.ItemCLR import ItemCLR
 from AnalisisSintacticoCLR.CLR import CLR 
 from AnalisisSintacticoCLR.GrammarCLR import GrammarCRL
 
+"""
 grammar = GLC("Program")
 grammar.add_production("Program", "Statement")
 grammar.add_production("Program", "Statement Program")
@@ -41,3 +42,46 @@ analisis.analyze("if ( identifier == constant ) { identifier = identifier * cons
 analisis.analyze("while ( identifier > constant ) { identifier = constant / constant - identifier ; identifier = constant ; }")
 analisis.analyze("while ( identifier > constant ) { if ( identifier != constant ) { identifier = constant ; } }")
 analisis.analyze("for ( identifier = constant ; identifier >= constant ; identifier = identifier + constant ) { if ( identifier != constant ) { identifier = constant ; } }")
+"""
+
+grammar = GLC("Start")
+grammar.add_production("Start", "🜉 s Program 🝓")
+grammar.add_production("Program", "Statement s")
+grammar.add_production("Program", "Statement s Program")
+grammar.add_production("Statement", "Assignment")
+grammar.add_production("Statement", "IfStatement")
+grammar.add_production("Statement", "WhileLoop")
+grammar.add_production("Statement", "ForLoop")
+grammar.add_production("Assignment", "🝳 identifier 🝳 🝑 Expression")
+grammar.add_production("Expression", "Term Expression'")
+grammar.add_production("Expression", "Term")
+grammar.add_production("Expression'", "🜂 Term")
+grammar.add_production("Expression'", "🜃 Term")
+grammar.add_production("Expression'", "🜁 Term")
+grammar.add_production("Expression'", "🜄 Term")
+grammar.add_production("Term", "🝳 identifier 🝳")
+grammar.add_production("Term", "constant")
+grammar.add_production("IfStatement", "se ☾ Condition ☽ s 🜚 s Program 🜚")
+grammar.add_production("Condition", "Expression 🜎 Expression")
+grammar.add_production("Condition", "Expression 🜍 Expression")
+grammar.add_production("Condition", "Expression 🜕 Expression")
+grammar.add_production("Condition", "Expression 🜔 Expression")
+grammar.add_production("Condition", "Expression 🜗 Expression")
+grammar.add_production("Condition", "Expression 🜖 Expression")
+grammar.add_production("WhileLoop", "dum ☾ Condition ☽ s 🜚 s Program 🜚")
+grammar.add_production("ForLoop", "por ☾ Assignment ; Condition ; Assignment ☽ s 🜚 s Program 🜚")
+
+grammar.print_productions()
+
+analisis = CLR(grammar)
+analisis.buildTable()
+#analisis.printGoto()
+#analisis.printItems()
+#analisis.printTable()
+
+#analisis.analyze("🜉 s 🝳 identifier 🝳 🝑 constant s 🝳 identifier 🝳 🝑 constant s 🝓")
+#analisis.analyze("🜉 s se ☾ 🝳 identifier 🝳 🜕 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant s 🜚 s 🝓")
+#analisis.analyze("🜉 s dum ☾ constant 🜍 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant 🜁 constant s 🜚 s 🝓")
+#analisis.analyze("🜉 s 🝳 identifier 🝳 🝑 constant s 🝳 identifier 🝳 🝑 constant s 🝓")
+#analisis.analyze("🜉 s por ☾ 🝳 identifier 🝳 🝑 constant ; 🝳 identifier 🝳 🜔 constant ; 🝳 identifier 🝳 🝑 🝳 identifier 🝳 🜂 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant 🜁 constant s 🜚 s 🝓")
+analisis.analyze("🜉 s por ☾ 🝳 identifier 🝳 🝑 constant ; 🝳 identifier 🝳 🜔 constant ; 🝳 identifier 🝳 🝑 🝳 identifier 🝳 🜂 constant ☽ s 🜚 s se ☾ 🝳 identifier 🝳 🜕 constant ☽ s 🜚 s dum ☾ constant 🜍 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant 🜁 constant s 🜚 s 🜚 s 🜚 s 🝓")

@@ -6,9 +6,6 @@ from copy import *
 from .Item import *
 from Gramática.GLC import GLC
 
-
-
-
 class SLR:
     def __init__(self,grammar):
         self.grammar = grammar
@@ -152,7 +149,7 @@ class SLR:
                     for element in self.srlGrammar:
                         number,nT,p = element  #número, no terminal y produccion
                         if prod[:-2] == p and nonTerminal == nT:
-                            #print("R" + str(number) + " en los siguientes de " + nT + " en I" + str(item.name))
+                            print("R" + str(number) + " en los siguientes de " + nT + " en I" + str(item.name))
                             for symbol in followingS[nT]:
                                 if (self.table[item.name])[symbol] == None:
                                     (self.table[item.name])[symbol] = "R"+str(number)
@@ -199,8 +196,8 @@ class SLR:
             stack = ["0"]
             control = True
             while control == True:
-                #print("STACK: " + str(stack))
-                #print("INPUT: " + str(input))
+                print("STACK: " + str(stack))
+                print("INPUT: " + str(input))
                 res = (self.table[stack[-1]])[input[0]]
                 if res == None: 
                     aux = []
@@ -214,23 +211,23 @@ class SLR:
                     print("------------------------")
                     return
                 if res[0] == 'S': #SHIFT
-                    #print("SHIFT")
+                    print("SHIFT")
                     stack.append(input[0])
                     del input[0]
                     aux = (self.table[stack[-2]])[stack[-1]]
                     aux = aux[1:]
                     stack.append(aux)
-                    #print("------------------------")
+                    print("------------------------")
                 elif res[0] == 'R': #REDUCE BY
                     n,nt,p = self.srlGrammar[int(res[1:])-1]
-                    #print("REDUCE BY: " + nt + " -> " + p)
+                    print("REDUCE BY: " + nt + " -> " + p)
                     numberToReduce = len(p.split()) * 2
                     for i in range (numberToReduce):
                         stack.pop()
                     stack.append(nt)
                     aux = (self.table[stack[-2]])[stack[-1]]
                     stack.append(aux)
-                    #print("------------------------")
+                    print("------------------------")
                 elif res == "ACC":
                     print("------------------------")
                     print("Entrada: " + instruction)
