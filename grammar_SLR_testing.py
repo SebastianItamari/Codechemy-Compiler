@@ -143,6 +143,25 @@ codigo7 = '''🜉
 🝳identifier🝳 🝑 -5
 🝓'''
 
+codigo8 = '''🜉
+🝓
+
+'''
+
+codigo9 = '''🜉
+se ☾🝳🝳 🜕 10 ☽
+🜚
+🝳identifier🝳 🝑 -5
+🜚
+🝓'''
+
+codigo10 = '''🜉
+dum ☾15 🜍 12☽
+🜚
+🝳identifier🝳 🝑 t
+🜚
+🝓'''
+
 analizador = AnalizadorLexico()
-tokens = analizador.analizar(codigo1)
+tokens = analizador.analizar(codigo7)
 analisis.analyze(tokens)

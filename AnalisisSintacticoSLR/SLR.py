@@ -9,7 +9,7 @@ from Gramática.GLC import GLC
 class SLR:
     def __init__(self,grammar):
         self.grammar = grammar
-        self.srlGrammar = self.enumerateGrammar(grammar)  #lista del formato (numero,noTerminal,produccion)
+        self.slrGrammar = self.enumerateGrammar(grammar)  #lista del formato (numero,noTerminal,produccion)
         self.listItems = []
         self.actualItem = 0
         self.listGoto = []  #lista del formato (partida,simbolo,llegada)
@@ -146,7 +146,7 @@ class SLR:
             list = grammar.productions[nonTerminal]
             for prod in list:
                 if prod[-1] == '.':
-                    for element in self.srlGrammar:
+                    for element in self.slrGrammar:
                         number,nT,p = element  #número, no terminal y produccion
                         if prod[:-2] == p and nonTerminal == nT:
                             for symbol in followingS[nT]:
@@ -213,7 +213,7 @@ class SLR:
                         stack.append(aux)
                         print("------------------------")
                     elif res[0] == 'R': #REDUCE BY
-                        n,nt,p = self.srlGrammar[int(res[1:])-1]
+                        n,nt,p = self.slrGrammar[int(res[1:])-1]
                         print("REDUCE BY: " + nt + " -> " + p)
                         numberToReduce = len(p.split()) * 2
                         for i in range (numberToReduce):
@@ -229,6 +229,7 @@ class SLR:
                         control = False
         except SLRError as e:
             print("------------------------")
+            print("Error en el analizador sintáctico SLR.")
             print(e.mensaje)
             print("------------------------")
             exit()

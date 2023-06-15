@@ -3,6 +3,7 @@ from Gramática.GLC import GLC
 from AnalisisSintacticoCLR.ItemCLR import ItemCLR
 from AnalisisSintacticoCLR.CLR import CLR 
 from AnalisisSintacticoCLR.GrammarCLR import GrammarCRL
+from Análisis_Léxico.Analizador.AnalizadorLexico import AnalizadorLexico
 
 """
 grammar = GLC("Program")
@@ -95,3 +96,80 @@ analisis.buildTable()
 #analisis.analyze("🜉 s 🝓 s s")
 #analisis.analyze("🜉 s se ☾ 🝳 🝳 🜕 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant s 🜚 s 🝓")
 #analisis.analyze("🜉 s dum ☾ constant 🜍 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 t s 🜚 s 🝓")
+
+codigo0 = '''🜉
+🝳var🝳 🝑 -10
+🝳nombre🝳 🝑 1
+🝓'''
+
+codigo1 = '''🜉
+se ☾ 🝳var🝳 🜕 -2 ☽
+🜚
+🝳var🝳 🝑 🝳var🝳 🜂 2
+🜚
+🝓'''
+
+codigo2 = '''🜉
+dum ☾🝳id🝳 🜍 200☽
+🜚
+🝳id🝳 🝑 12 🜁 1
+🜚
+🝓'''
+
+codigo3 = '''🜉
+🝳identifier🝳 🝑 23
+🝳identifier🝳 🝑 -2
+🝓'''
+
+codigo4 = '''🜉
+por ☾🝳len🝳 🝑 0; 🝳len🝳 🜔 12; 🝳len🝳 🝑 🝳len🝳 🜂 1☽
+🜚
+🝳len🝳 🝑 12 🜁 23
+🜚
+🝓'''
+
+codigo5 = '''🜉
+por ☾🝳identifier🝳 🝑 0; 🝳identifier🝳 🜔 23; 🝳identifier🝳 🝑 🝳identifier🝳 🜂 2☽
+🜚
+se ☾🝳identifier🝳 🜕 3☽
+🜚
+dum ☾🝳identifier🝳 🜍 0☽
+🜚
+🝳identifier🝳 🝑 2 🜁 3
+🜚
+🜚
+🜚
+🝳identifier🝳 🝑 -1
+🝓'''
+
+codigo6 = '''🜉
+presi ☾ 🝳 identifier 🝳 ☽
+🝓'''
+
+codigo7 = '''🜉
+🝳identifier🝳 2
+🝳identifier🝳 🝑 -5
+🝓'''
+
+codigo8 = '''🜉
+🝓
+
+'''
+
+codigo9 = '''🜉
+se ☾🝳🝳 🜕 10 ☽
+🜚
+🝳identifier🝳 🝑 -5
+🜚
+🝓'''
+
+codigo10 = '''🜉
+dum ☾15 🜍 12☽
+🜚
+🝳identifier🝳 🝑 t
+🜚
+🝓'''
+
+analizador = AnalizadorLexico()
+tokens = analizador.analizar(codigo10)
+analisis.analyze(tokens)

@@ -10,7 +10,7 @@ from Gramática.GLC import *
 class CLR:
     def __init__(self,grammar):
         self.grammar = grammar
-        self.crlGrammar = self.enumerateGrammar(grammar)  #lista del formato (numero,noTerminal,produccion)
+        self.clrGrammar = self.enumerateGrammar(grammar)  #lista del formato (numero,noTerminal,produccion)
         self.listItems = []
         self.actualItem = 0
         self.listGoto = []  #lista del formato (partida,simbolo,llegada)
@@ -154,7 +154,7 @@ class CLR:
             list = grammar.productions[nonTerminal]
             for prod in list:
                 if (prod[0])[-1] == '.':
-                    for element in self.crlGrammar:
+                    for element in self.clrGrammar:
                         number,nT,p = element
                         if (prod[0])[:-2] == p:
                             for symbol in prod[1]:
@@ -182,56 +182,60 @@ class CLR:
             print(str(item) + " -> " + aux)
 
     def analyze(self, instruction):
-        if self.table != {}:
-            input = instruction.split()
-            for word in input:
-                if word not in self.grammar.terminals:
-                    print("------------------------")
-                    print("Error de sintaxis: La palabra " + word + " no pertenece al lenguaje.")
-                    print("------------------------")
-                    return
+        try:
+            if self.table != {}:
+                input = instruction.copy()  #Opcional
+                for word in [tupla[0] for tupla in input]:
+                    if word not in self.grammar.terminals:
+                        raise CLRError("Error de sintaxis: La palabra " + word + " no pertenece al lenguaje.")
+                print("------------------------")
+                print("ANÁLISIS")
+                print("------------------------")
+                input.append(("$","$",0,(0,0)))
+                stack = ["0"]
+                control = True
+                while control == True:
+                    print("STACK: " + str(stack))
+                    print("INPUT: " + str(input))
+                    res = (self.table[stack[-1]])[input[0][0]]
+                    if res == None: 
+                        aux = []
+                        msg = "Error de sintaxis en la palabra '" + input[0][1] + "' en la fila " + str(input[0][2]) + ".\n"
+                        for key, value in self.table[stack[-1]].items():
+                            if value != None and key in self.grammar.terminals: 
+                                aux.append(key)
+                        msg += "Se puede usar " + " ó ".join(aux) + " en su lugar."
+                        raise CLRError(msg)
+                    if res[0] == 'S': #SHIFT
+                        print("SHIFT")
+                        stack.append(input[0][0])
+                        del input[0]
+                        aux = (self.table[stack[-2]])[stack[-1]]
+                        aux = aux[1:]
+                        stack.append(aux)
+                        print("------------------------")
+                    elif res[0] == 'R': #REDUCE BY
+                        n,nt,p = self.clrGrammar[int(res[1:])-1]
+                        print("REDUCE BY: " + nt + " -> " + p)
+                        numberToReduce = len(p.split()) * 2
+                        for i in range (numberToReduce):
+                            stack.pop()
+                        stack.append(nt)
+                        aux = (self.table[stack[-2]])[stack[-1]]
+                        stack.append(aux)
+                        print("------------------------")
+                    elif res == "ACC":
+                        print("------------------------")
+                        print("Instrucción válida!")
+                        print("------------------------")
+                        control = False
+        except CLRError as e:
             print("------------------------")
-            print("ANÁLISIS")
+            print("Error en el analizador sintáctico CLR.")
+            print(e.mensaje)
             print("------------------------")
-            input.append("$")
-            stack = ["0"]
-            control = True
-            while control == True:
-                print("STACK: " + str(stack))
-                print("INPUT: " + str(input))
-                res = (self.table[stack[-1]])[input[0]]
-                if res == None: 
-                    aux = []
-                    print("------------------------")
-                    print("Entrada: " + instruction)
-                    print("Error de sintaxis en la palabra " + input[0]+ ".")
-                    for key, value in self.table[stack[-1]].items():
-                        if value != None and key in self.grammar.terminals: 
-                            aux.append(key)
-                    print("Se puede usar " + " ó ".join(aux) + " en su lugar.")
-                    print("------------------------")
-                    return
-                if res[0] == 'S': #SHIFT
-                    print("SHIFT")
-                    stack.append(input[0])
-                    del input[0]
-                    aux = (self.table[stack[-2]])[stack[-1]]
-                    aux = aux[1:]
-                    stack.append(aux)
-                    print("------------------------")
-                elif res[0] == 'R': #REDUCE BY
-                    n,nt,p = self.crlGrammar[int(res[1:])-1]
-                    print("REDUCE BY: " + nt + " -> " + p)
-                    numberToReduce = len(p.split()) * 2
-                    for i in range (numberToReduce):
-                        stack.pop()
-                    stack.append(nt)
-                    aux = (self.table[stack[-2]])[stack[-1]]
-                    stack.append(aux)
-                    print("------------------------")
-                elif res == "ACC":
-                    print("------------------------")
-                    print("Entrada: " + instruction)
-                    print("Instrucción válida!")
-                    print("------------------------")
-                    control = False
+            exit()
+
+class CLRError(Exception):
+    def __init__(self, mensaje):
+        self.mensaje = mensaje
