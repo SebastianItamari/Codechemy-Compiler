@@ -75,7 +75,8 @@ dum ☾🝳nombre🝳 🜗 -20☽
 
 
 analizador = AnalizadorLexico()
-tokens = analizador.analizar(codigo3)
+tokens = analizador.analizar(codigo2)
+
 for token in tokens:
     print(token)
 

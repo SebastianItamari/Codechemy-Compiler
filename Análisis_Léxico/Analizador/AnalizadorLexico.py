@@ -1,7 +1,8 @@
 import re
 
 class LexicalError(Exception):
-    pass
+    def __init__ (self, caracter, linea):
+        self.mensaje = f"Error léxico en la línea {linea}. Caracter inválido '{caracter}'"
 
 class AnalizadorLexico:
     def __init__(self):
@@ -38,65 +39,69 @@ class AnalizadorLexico:
         self.columna = 1
 
     def analizar(self,codigo_fuente):
-        while codigo_fuente:
-            if re.match(self.patron_se, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_se, codigo_fuente, 'se') 
-            elif re.match(self.patron_pcoma, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_pcoma, codigo_fuente, ';')
-            elif re.match(self.patron_numero, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_numero, codigo_fuente, 'constant') 
-            elif re.match(self.patron_simbolo_variable, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_simbolo_variable, codigo_fuente, '🝳')
-            elif re.match(self.patron_For, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_For, codigo_fuente, 'por')
-            elif re.match(self.patron_While, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_While, codigo_fuente, 'dum')
-            elif re.match(self.patron_print, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_print, codigo_fuente, 'presi')
-            elif re.match(self.patron_Delimitador, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Delimitador, codigo_fuente, '🜚')
-            elif re.match(self.patron_nombre, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_nombre, codigo_fuente, 'identifier')
-            elif re.match(self.patron_operador_mas, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_operador_mas, codigo_fuente, '🜂')
-            elif re.match(self.patron_operador_menos, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_operador_menos, codigo_fuente, '🜄')
-            elif re.match(self.patron_operador_por, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_operador_por, codigo_fuente, '🜁')
-            elif re.match(self.patron_operador_entre, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_operador_entre, codigo_fuente, '🜃')
-            elif re.match(self.patron_Operador_Asignacion, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Operador_Asignacion, codigo_fuente, '🝑')
-            elif re.match(self.patron_Operador_mayor, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Operador_mayor, codigo_fuente, '🜔')
-            elif re.match(self.patron_Operador_menor, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Operador_menor, codigo_fuente, '🜕')
-            elif re.match(self.patron_Operador_mayor_Igual, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Operador_mayor_Igual, codigo_fuente, '🜖')
-            elif re.match(self.patron_Operador_menor_Igual, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Operador_menor_Igual, codigo_fuente, '🜗')
-            elif re.match(self.patron_Operador_Diferente_A, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Operador_Diferente_A, codigo_fuente, '🜍')
-            elif re.match(self.patron_Operador_Igual_A , codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Operador_Igual_A, codigo_fuente, '🜎')
-            elif re.match(self.patron_parentesis_inicio, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_parentesis_inicio, codigo_fuente, '☾')
-            elif re.match(self.patron_parentesis_fin, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_parentesis_fin, codigo_fuente, '☽')
-            elif re.match(self.patron_Salto_Linea, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Salto_Linea, codigo_fuente, 's')
-                self.columna = 1
-                self.linea += 1
-            elif re.match(self.patron_inicio_programa, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_inicio_programa, codigo_fuente, '🜉')
-            elif re.match(self.patron_fin_programa, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_fin_programa, codigo_fuente, '🝓')
-            elif re.match(self.patron_Espacio_Blanco, codigo_fuente):
-                codigo_fuente = re.sub(self.patron_Espacio_Blanco, '', codigo_fuente, count=1)
-            else:
-                raise LexicalError("Error Léxico: Carácter no válido " + codigo_fuente[0] + " encontrado en la fila " + str(self.linea))
-
-        return self.tokens
+        try:
+            while codigo_fuente:
+                if re.match(self.patron_se, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_se, codigo_fuente, 'se') 
+                elif re.match(self.patron_pcoma, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_pcoma, codigo_fuente, ';')
+                elif re.match(self.patron_numero, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_numero, codigo_fuente, 'constant') 
+                elif re.match(self.patron_simbolo_variable, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_simbolo_variable, codigo_fuente, '🝳')
+                elif re.match(self.patron_For, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_For, codigo_fuente, 'por')
+                elif re.match(self.patron_While, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_While, codigo_fuente, 'dum')
+                elif re.match(self.patron_print, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_print, codigo_fuente, 'presi')
+                elif re.match(self.patron_Delimitador, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_Delimitador, codigo_fuente, '🜚')
+                elif re.match(self.patron_nombre, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_nombre, codigo_fuente, 'identifier')
+                elif re.match(self.patron_operador_mas, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_operador_mas, codigo_fuente, '🜂')
+                elif re.match(self.patron_operador_menos, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_operador_menos, codigo_fuente, '🜄')
+                elif re.match(self.patron_operador_por, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_operador_por, codigo_fuente, '🜁')
+                elif re.match(self.patron_operador_entre, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_operador_entre, codigo_fuente, '🜃')
+                elif re.match(self.patron_Operador_Asignacion, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_Operador_Asignacion, codigo_fuente, '🝑')
+                elif re.match(self.patron_Operador_mayor, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_Operador_mayor, codigo_fuente, '🜔')
+                elif re.match(self.patron_Operador_menor, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_Operador_menor, codigo_fuente, '🜕')
+                elif re.match(self.patron_Operador_mayor_Igual, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_Operador_mayor_Igual, codigo_fuente, '🜖')
+                elif re.match(self.patron_Operador_menor_Igual, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_Operador_menor_Igual, codigo_fuente, '🜗')
+                elif re.match(self.patron_Operador_Diferente_A, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_Operador_Diferente_A, codigo_fuente, '🜍')
+                elif re.match(self.patron_Operador_Igual_A , codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_Operador_Igual_A, codigo_fuente, '🜎')
+                elif re.match(self.patron_parentesis_inicio, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_parentesis_inicio, codigo_fuente, '☾')
+                elif re.match(self.patron_parentesis_fin, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_parentesis_fin, codigo_fuente, '☽')
+                elif re.match(self.patron_Salto_Linea, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_Salto_Linea, codigo_fuente, 's')
+                    self.columna = 1
+                    self.linea += 1
+                elif re.match(self.patron_inicio_programa, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_inicio_programa, codigo_fuente, '🜉')
+                elif re.match(self.patron_fin_programa, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_fin_programa, codigo_fuente, '🝓')
+                elif re.match(self.patron_Espacio_Blanco, codigo_fuente):
+                    codigo_fuente = re.sub(self.patron_Espacio_Blanco, '', codigo_fuente, count=1)
+                else:
+                    raise LexicalError(codigo_fuente[0], self.linea)
+            return self.tokens
+        except LexicalError as lexicalError:
+            print(lexicalError.mensaje)
+            exit()
+        
     
     def matchPattern(self, pattern, codigo_fuente, token):
         matchedPattern = re.match(pattern, codigo_fuente).group()
