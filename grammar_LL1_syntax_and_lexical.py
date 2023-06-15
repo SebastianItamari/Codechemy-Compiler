@@ -1,3 +1,6 @@
+#
+import sys
+
 #local application imports
 from Análisis_Léxico.Analizador.AnalizadorLexico import AnalizadorLexico
 from Gramática.GLC import GLC
@@ -9,16 +12,13 @@ dum ☾🝳nombre🝳 🜗 -20☽
 🜚
 🝳var🝳 🝑 🝳var🝳 🜂 10 
 🜚'''
-try:
-    analizador = AnalizadorLexico()
-    tokens = analizador.analizar(codigo)
-
-except Exception: 
-    print("Encountered a lexical error.")
+analizador = AnalizadorLexico()
+tokens = analizador.analizar(codigo)
 
 codeasastring = ""
 for token in tokens:
     codeasastring += " " + token[0]
+print(codeasastring)
 #region Grammar declaration
 print("Análisis para la Gramática - LL1")
 grammar = GLC('Start')
