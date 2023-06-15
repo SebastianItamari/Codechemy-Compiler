@@ -170,6 +170,43 @@ dum ☾15 🜍 12☽
 🜚
 🝓'''
 
+codigo11 = '''🜉
+dum ☾🝳nombre🝳 🜗 -20☽
+🜚
+por ☾🝳identifier🝳 🝑 5; 🝳identifier🝳 🜔 8; 🝳identifier🝳 🝑 🝳identifier🝳 🜂 5☽ 
+🜚 
+se ☾🝳identifier🝳 🜕 9☽ 
+🜚
+🝳identifier🝳 🝑 -7 🜁 8
+presi ☾6☽
+🜚
+se ☾🝳identifier🝳 🜕 6☽ 
+🜚 
+🝳identifier🝳 🝑 5 
+🜚
+🜚
+🝳var🝳 🝑 🝳var🝳 🜂 10
+🜚
+🝓'''
+
+codigo12 = '''🜉
+🝳identifier🝳 🝑 12
+🝳identifier🝳 🝑 -2
+🝳identifier🝳 🝑 12
+se ☾🝳identifier🝳 🜗 🝳identifier🝳☽
+🜚
+🝳identifier🝳 🝑 🝳identifier🝳
+🜚
+se ☾🝳identifier🝳 🜗 🝳identifier🝳☽
+🜚
+🝳identifier🝳 🝑 🝳identifier🝳
+🜚
+se ☾🝳identifier🝳 🜗 🝳identifier🝳☽
+🜚
+🝳identifier🝳 🝑 🝳identifier🝳
+🜚
+🝓'''
+
 analizador = AnalizadorLexico()
-tokens = analizador.analizar(codigo10)
+tokens = analizador.analizar(codigo12)
 analisis.analyze(tokens)
