@@ -64,3 +64,9 @@ analizador = AnalizadorLexico()
 tokens = analizador.analizar(codigo3)
 for token in tokens:
     print(token)
+
+str = ""
+for token in tokens:
+    str += " " + token[0]
+
+print(str)

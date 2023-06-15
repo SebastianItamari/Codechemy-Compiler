@@ -9,7 +9,6 @@ class AnalizadorLexico:
         self.patron_While = r'dum'
         self.patron_se = r'se'
         self.patron_For = r'por'
-        self.patron_alie = r'alie'
         self.patron_pcoma = r';'
         self.patron_operador_mas = r'🜂'
         self.patron_operador_menos = r'🜄'
@@ -29,11 +28,12 @@ class AnalizadorLexico:
         self.patron_inicio_programa = r'🜉'#
         self.patron_fin_programa = r'🝓'#
         self.patron_Salto_Linea = r'\n'
-        self.patron_Espacio_Blanco = r'([\t\r\f\v\s])'
         self.patron_simbolo_variable = r'🝳'
         self.patron_nombre = r'\w+'
 
         """ 
+        self.patron_Espacio_Blanco = r'([\t\r\f\v\s])'
+        self.patron_alie = r'alie'
         self.patron_identificador = r'\w+'
         self.patron_operador_logico_and = r'🜓'
         self.patron_operador_logico_or = r'🝘'
@@ -60,11 +60,11 @@ class AnalizadorLexico:
     def analizar(self,codigo_fuente):
         while codigo_fuente:
             #codigo_fuente = codigo_fuente.strip()  # Eliminar espacios en blanco al inicio y al final
-            if re.match(self.patron_alie, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_alie, codigo_fuente, 'alie')
+            #if re.match(self.patron_alie, codigo_fuente):
+            #    codigo_fuente = self.matchPattern(self.patron_alie, codigo_fuente, 'alie')
             #elif re.match(self.patron_comment, codigo_fuente):
             #    codigo_fuente = self.matchPattern(self.patron_comment, codigo_fuente, '🜌')
-            elif re.match(self.patron_se, codigo_fuente):
+            if re.match(self.patron_se, codigo_fuente):
                 codigo_fuente = self.matchPattern(self.patron_se, codigo_fuente, 'se') 
             elif re.match(self.patron_pcoma, codigo_fuente):
                 codigo_fuente = self.matchPattern(self.patron_pcoma, codigo_fuente, ';')
@@ -126,10 +126,12 @@ class AnalizadorLexico:
             elif re.match(self.patron_parentesis_fin, codigo_fuente):
                 codigo_fuente = self.matchPattern(self.patron_parentesis_fin, codigo_fuente, '☽')
             elif re.match(self.patron_Salto_Linea, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Salto_Linea, codigo_fuente, '\\n')
+                codigo_fuente = self.matchPattern(self.patron_Salto_Linea, codigo_fuente, 's')
                 self.columna = 1
-            elif re.match(self.patron_Espacio_Blanco, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_Espacio_Blanco, codigo_fuente, '_')
+                self.linea += 1
+            
+            #elif re.match(self.patron_Espacio_Blanco, codigo_fuente):
+            #    codigo_fuente = self.matchPattern(self.patron_Espacio_Blanco, codigo_fuente, '_')
             #elif re.match(self.patron_identificador, codigo_fuente):
             #    codigo_fuente = self.matchPattern(self.patron_identificador, codigo_fuente, 'IDENTIFICADOR')
             #elif re.match(self.patron_operador_logico_and, codigo_fuente):
