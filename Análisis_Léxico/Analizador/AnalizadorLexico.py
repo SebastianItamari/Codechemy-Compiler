@@ -72,7 +72,7 @@ class AnalizadorLexico:
             #elif re.match(self.patron_funkcio, codigo_fuente):
             #    codigo_fuente = self.matchPattern(self.patron_funkcio, codigo_fuente, 'funkcio')  
             elif re.match(self.patron_numero, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_numero, codigo_fuente, 'NUMERO') 
+                codigo_fuente = self.matchPattern(self.patron_numero, codigo_fuente, 'constant') 
             elif re.match(self.patron_simbolo_variable, codigo_fuente):
                 codigo_fuente = self.matchPattern(self.patron_simbolo_variable, codigo_fuente, '🝳')
             #elif re.match(self.patron_simbolo_funcion, codigo_fuente):
@@ -88,7 +88,7 @@ class AnalizadorLexico:
             #elif re.match(self.patron_Return, codigo_fuente):
             #    codigo_fuente = self.matchPattern(self.patron_Return, codigo_fuente, 'reveni')
             elif re.match(self.patron_nombre, codigo_fuente):
-                codigo_fuente = self.matchPattern(self.patron_nombre, codigo_fuente, 'NOMBRE')
+                codigo_fuente = self.matchPattern(self.patron_nombre, codigo_fuente, 'identifier')
             elif re.match(self.patron_operador_mas, codigo_fuente):
                 codigo_fuente = self.matchPattern(self.patron_operador_mas, codigo_fuente, '🜂')
             elif re.match(self.patron_operador_menos, codigo_fuente):

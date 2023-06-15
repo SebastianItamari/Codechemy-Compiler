@@ -48,6 +48,12 @@ class CLR:
                             if control == False:
                                 auxGrammar.initial = noTerminal
                                 control = True
+                            if self.actualItem == 26:
+                                print(itemP.name)
+                                itemP.grammar.print_productions()
+                                print("ITEM 26")
+                                print(str(prod[0]))
+                                print(str(prod[1]))
                             auxGrammar.add_production(noTerminal,(newProduction,prod[1]))   
 
          c, name = self.exist(auxGrammar)
@@ -196,8 +202,8 @@ class CLR:
             stack = ["0"]
             control = True
             while control == True:
-                #print("STACK: " + str(stack))
-                #print("INPUT: " + str(input))
+                print("STACK: " + str(stack))
+                print("INPUT: " + str(input))
                 res = (self.table[stack[-1]])[input[0]]
                 if res == None: 
                     aux = []
@@ -211,23 +217,23 @@ class CLR:
                     print("------------------------")
                     return
                 if res[0] == 'S': #SHIFT
-                    #print("SHIFT")
+                    print("SHIFT")
                     stack.append(input[0])
                     del input[0]
                     aux = (self.table[stack[-2]])[stack[-1]]
                     aux = aux[1:]
                     stack.append(aux)
-                    #print("------------------------")
+                    print("------------------------")
                 elif res[0] == 'R': #REDUCE BY
                     n,nt,p = self.crlGrammar[int(res[1:])-1]
-                    #print("REDUCE BY: " + nt + " -> " + p)
+                    print("REDUCE BY: " + nt + " -> " + p)
                     numberToReduce = len(p.split()) * 2
                     for i in range (numberToReduce):
                         stack.pop()
                     stack.append(nt)
                     aux = (self.table[stack[-2]])[stack[-1]]
                     stack.append(aux)
-                    #print("------------------------")
+                    print("------------------------")
                 elif res == "ACC":
                     print("------------------------")
                     print("Entrada: " + instruction)
@@ -383,7 +389,7 @@ grammar.add_production("AritOperatoro","/")
 
 grammar.print_productions()
 '''
-
+"""
 grammar = GLC("Program")
 grammar.add_production("Program", "Statement")
 grammar.add_production("Program", "Statement Program")
@@ -441,3 +447,4 @@ analisis.analyze("if ( identifier == constant ) { identifier = identifier * cons
 analisis.analyze("while ( identifier > constant ) { identifier = constant / constant - identifier ; identifier = constant ; }")
 analisis.analyze("while ( identifier > constant ) { if ( identifier != constant ) { identifier = constant ; } }")
 analisis.analyze("for ( identifier = constant ; identifier >= constant ; identifier = identifier + constant ) { if ( identifier != constant ) { identifier = constant ; } }")
+"""
