@@ -93,12 +93,19 @@ def parse(sentence, chart, glc):
                 last = parsingStack.pop()
 
         if(error == True):
-            print("Syntax error")
+            raise Exception
         else:
             print("The sentence is syntactically correct.")
 
     except:
-        print("Syntax error")
+        linewithError = ""
+        for x in sentence:
+            if x[2] == symbol[2] and x[1]!="\n":
+                linewithError = linewithError + f"{x[1]} "
+        print(f"Syntax error, line {symbol[2]}, in {linewithError}with symbol: {symbol[1]}")
+        #tokens _> symbol. line se encuentra en symbol[2]
+        #usar tokens para imprimir toda la linea con el error
+        quit()
     
 
 def differentFirstandFollowing(firsts, followings):

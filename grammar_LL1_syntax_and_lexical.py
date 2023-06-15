@@ -10,15 +10,12 @@ from Análisis_Sintáctico_LL1.syntax_chart import *
 codigo = '''🜉
 dum ☾🝳nombre🝳 🜗 -20☽
 🜚
-🝳var🝳 🝑 🝳var🝳 🜂 10 
-🜚'''
+🝳var🝳 🝑 🝳var🝳 🜂 10 🜂 10
+🜚
+🝓'''
 analizador = AnalizadorLexico()
 tokens = analizador.analizar(codigo)
 
-codeasastring = ""
-for token in tokens:
-    codeasastring += " " + token[0]
-print(codeasastring)
 #region Grammar declaration
 print("Análisis para la Gramática - LL1")
 grammar = GLC('Start')
