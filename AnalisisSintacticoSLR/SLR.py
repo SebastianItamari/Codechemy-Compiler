@@ -180,56 +180,59 @@ class SLR:
             print(str(item) + " -> " + aux)
 
     def analyze(self, instruction):
-        if self.table != {}:
-            input = instruction.split()
-            for word in input:
-                if word not in self.grammar.terminals:
-                    print("------------------------")
-                    print("Error de sintaxis: La palabra " + word + " no pertenece al lenguaje.")
-                    print("------------------------")
-                    return
+        try:
+            if self.table != {}:
+                input = instruction.copy()  #Opcional
+                for word in [tupla[0] for tupla in input]:
+                    if word not in self.grammar.terminals:
+                        raise SLRError("Error de sintaxis: La palabra " + word + " no pertenece al lenguaje.")
+                print("------------------------")
+                print("ANÁLISIS")
+                print("------------------------")
+                input.append(("$","$",0,(0,0)))
+                stack = ["0"]
+                control = True
+                while control == True:
+                    print("STACK: " + str(stack))
+                    print("INPUT: " + str(input))
+                    res = (self.table[stack[-1]])[input[0][0]]
+                    if res == None: 
+                        aux = []
+                        msg = "Error de sintaxis en la palabra '" + input[0][1] + "' en la fila " + str(input[0][2]) + ".\n"
+                        for key, value in self.table[stack[-1]].items():
+                            if value != None and key in self.grammar.terminals: 
+                                aux.append(key)
+                        msg += "Se puede usar " + " ó ".join(aux) + " en su lugar."
+                        raise SLRError(msg)
+                    if res[0] == 'S': #SHIFT
+                        print("SHIFT")
+                        stack.append(input[0][0])
+                        del input[0]
+                        aux = (self.table[stack[-2]])[stack[-1]]
+                        aux = aux[1:]
+                        stack.append(aux)
+                        print("------------------------")
+                    elif res[0] == 'R': #REDUCE BY
+                        n,nt,p = self.srlGrammar[int(res[1:])-1]
+                        print("REDUCE BY: " + nt + " -> " + p)
+                        numberToReduce = len(p.split()) * 2
+                        for i in range (numberToReduce):
+                            stack.pop()
+                        stack.append(nt)
+                        aux = (self.table[stack[-2]])[stack[-1]]
+                        stack.append(aux)
+                        print("------------------------")
+                    elif res == "ACC":
+                        print("------------------------")
+                        print("Instrucción válida!")
+                        print("------------------------")
+                        control = False
+        except SLRError as e:
             print("------------------------")
-            print("ANÁLISIS")
+            print(e.mensaje)
             print("------------------------")
-            input.append("$")
-            stack = ["0"]
-            control = True
-            while control == True:
-                print("STACK: " + str(stack))
-                print("INPUT: " + str(input))
-                res = (self.table[stack[-1]])[input[0]]
-                if res == None: 
-                    aux = []
-                    print("------------------------")
-                    print("Entrada: " + instruction)
-                    print("Error de sintaxis en la palabra " + input[0]+ ".")
-                    for key, value in self.table[stack[-1]].items():
-                        if value != None and key in self.grammar.terminals: 
-                            aux.append(key)
-                    print("Se puede usar " + " ó ".join(aux) + " en su lugar.")
-                    print("------------------------")
-                    return
-                if res[0] == 'S': #SHIFT
-                    print("SHIFT")
-                    stack.append(input[0])
-                    del input[0]
-                    aux = (self.table[stack[-2]])[stack[-1]]
-                    aux = aux[1:]
-                    stack.append(aux)
-                    print("------------------------")
-                elif res[0] == 'R': #REDUCE BY
-                    n,nt,p = self.srlGrammar[int(res[1:])-1]
-                    print("REDUCE BY: " + nt + " -> " + p)
-                    numberToReduce = len(p.split()) * 2
-                    for i in range (numberToReduce):
-                        stack.pop()
-                    stack.append(nt)
-                    aux = (self.table[stack[-2]])[stack[-1]]
-                    stack.append(aux)
-                    print("------------------------")
-                elif res == "ACC":
-                    print("------------------------")
-                    print("Entrada: " + instruction)
-                    print("Instrucción válida!")
-                    print("------------------------")
-                    control = False
+            exit()
+
+class SLRError(Exception):
+    def __init__(self, mensaje):
+        self.mensaje = mensaje

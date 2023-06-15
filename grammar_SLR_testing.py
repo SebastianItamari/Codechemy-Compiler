@@ -2,6 +2,7 @@
 from Gramática.GLC import GLC
 from AnalisisSintacticoSLR.Item import Item
 from AnalisisSintacticoSLR.SLR import SLR 
+from Análisis_Léxico.Analizador.AnalizadorLexico import AnalizadorLexico
 """
 grammar = GLC("Start")
 
@@ -44,6 +45,7 @@ grammar.add_production("Statement", "Assignment")
 grammar.add_production("Statement", "IfStatement")
 grammar.add_production("Statement", "WhileLoop")
 grammar.add_production("Statement", "ForLoop")
+grammar.add_production("Statement", "Print")
 grammar.add_production("Assignment", "🝳 identifier 🝳 🝑 Expression")
 grammar.add_production("Expression", "Term Expression'")
 grammar.add_production("Expression", "Term")
@@ -62,7 +64,6 @@ grammar.add_production("Condition", "Expression 🜗 Expression")
 grammar.add_production("Condition", "Expression 🜖 Expression")
 grammar.add_production("WhileLoop", "dum ☾ Condition ☽ s 🜚 s Program 🜚")
 grammar.add_production("ForLoop", "por ☾ Assignment ; Condition ; Assignment ☽ s 🜚 s Program 🜚")
-grammar.add_production("Statement", "Print")
 grammar.add_production("Print", "presi ☾ Term ☽")
 
 grammar.print_productions()
@@ -87,3 +88,61 @@ analisis.buildTable()
 #analisis.analyze("🜉 s 🝓 s s")
 #analisis.analyze("🜉 s se ☾ 🝳 🝳 🜕 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant s 🜚 s 🝓")
 #analisis.analyze("🜉 s dum ☾ constant 🜍 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 t s 🜚 s 🝓")
+
+codigo0 = '''🜉
+🝳var🝳 🝑 -10
+🝳nombre🝳 🝑 1
+🝓'''
+
+codigo1 = '''🜉
+se ☾ 🝳var🝳 🜕 -2 ☽
+🜚
+🝳var🝳 🝑 🝳var🝳 🜂 2
+🜚
+🝓'''
+
+codigo2 = '''🜉
+dum ☾🝳id🝳 🜍 200☽
+🜚
+🝳id🝳 🝑 12 🜁 1
+🜚
+🝓'''
+
+codigo3 = '''🜉
+🝳identifier🝳 🝑 23
+🝳identifier🝳 🝑 -2
+🝓'''
+
+codigo4 = '''🜉
+por ☾🝳len🝳 🝑 0; 🝳len🝳 🜔 12; 🝳len🝳 🝑 🝳len🝳 🜂 1☽
+🜚
+🝳len🝳 🝑 12 🜁 23
+🜚
+🝓'''
+
+codigo5 = '''🜉
+por ☾🝳identifier🝳 🝑 0; 🝳identifier🝳 🜔 23; 🝳identifier🝳 🝑 🝳identifier🝳 🜂 2☽
+🜚
+se ☾🝳identifier🝳 🜕 3☽
+🜚
+dum ☾🝳identifier🝳 🜍 0☽
+🜚
+🝳identifier🝳 🝑 2 🜁 3
+🜚
+🜚
+🜚
+🝳identifier🝳 🝑 -1
+🝓'''
+
+codigo6 = '''🜉
+presi ☾ 🝳 identifier 🝳 ☽
+🝓'''
+
+codigo7 = '''🜉
+🝳identifier🝳 2
+🝳identifier🝳 🝑 -5
+🝓'''
+
+analizador = AnalizadorLexico()
+tokens = analizador.analizar(codigo1)
+analisis.analyze(tokens)
