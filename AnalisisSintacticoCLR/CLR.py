@@ -167,11 +167,11 @@ class CLR:
                                     #print(prod[1])
                                     #print("R" + str(number) + " en " + ", ".join(prod[1]) + " en I" + str(item.name))
                                     print("------------------------")
-                                    #print("Error en la gramática, no es una válida para este análisis")
-                                    print("Conflicto al armar la tabla, se tomará la primera opción")
+                                    print("Error en la gramática, no es una válida para este análisis")
+                                    #print("Conflicto al armar la tabla, se tomará la primera opción")
                                     print("------------------------")
-                                    #self.table = {}
-                                    #return
+                                    self.table = {}
+                                    return
         
     def printTable(self):
         print("TABLE")

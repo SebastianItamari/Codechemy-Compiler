@@ -149,7 +149,6 @@ class SLR:
                     for element in self.srlGrammar:
                         number,nT,p = element  #número, no terminal y produccion
                         if prod[:-2] == p and nonTerminal == nT:
-                            print("R" + str(number) + " en los siguientes de " + nT + " en I" + str(item.name))
                             for symbol in followingS[nT]:
                                 if (self.table[item.name])[symbol] == None:
                                     (self.table[item.name])[symbol] = "R"+str(number)
@@ -160,11 +159,11 @@ class SLR:
                                     #print(self.grammar.followingS[nT])
                                     #print("R" + str(number) + " en los siguientes de " + nT + " en I" + str(item.name))
                                     print("------------------------")
-                                    #print("Error en la gramática, no es una válida para este análisis")
-                                    print("Conflicto al armar la tabla, se tomará la primera opción")
+                                    print("Error en la gramática, no es una válida para este análisis")
+                                    #print("Conflicto al armar la tabla, se tomará la primera opción")
                                     print("------------------------")
-                                    #self.table = {}
-                                    #return
+                                    self.table = {}
+                                    return
                         
     def fillReduceTable(self,followingS):
         for item in self.listItems:
