@@ -31,6 +31,7 @@ class AnalizadorLexico:
         self.patron_simbolo_variable = r'🝳'
         self.patron_nombre = r'\w+'
         self.patron_print = r'presi'
+        self.patron_Espacio_Blanco = r'([\t\r\f\v\s])'
 
         self.tokens = []
         self.linea = 1
@@ -90,6 +91,8 @@ class AnalizadorLexico:
                 codigo_fuente = self.matchPattern(self.patron_fin_programa, codigo_fuente, '🝓')
             elif re.match(self.patron_print, codigo_fuente):
                 codigo_fuente = self.matchPattern(self.patron_print, codigo_fuente, 'presi')
+            elif re.match(self.patron_Espacio_Blanco, codigo_fuente):
+                codigo_fuente = re.sub(self.patron_Espacio_Blanco, '', codigo_fuente, count=1)
             else:
                 raise LexicalError("Error Léxico: Carácter no válido " + codigo_fuente[0] + " encontrado en la fila " + str(self.linea))
 
