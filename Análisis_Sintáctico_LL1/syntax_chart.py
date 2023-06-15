@@ -57,13 +57,14 @@ def printChart(terminals, nonterminals, chart):
         print(chart[x]['$'])
 
 def parse(sentence, chart, glc):
-    print(sentence+": ",end="")
+    #print(sentence+": ",end="")
     parsingStack = [glc.initial]
     error = False 
     if(sentence == ""):
         error = True 
     try:
-        for character in sentence.split():
+        for symbol in sentence:
+            character = symbol[0] #would be character in sentence.split()
             last = parsingStack.pop()
             while(character != last):
                 production = chart[last][character]
@@ -76,7 +77,7 @@ def parse(sentence, chart, glc):
                 last = parsingStack.pop()
             if(error == True):
                 break
-            sentence = " ".join(sentence.split()[1:])
+            #sentence = " ".join(sentence.split()[1:])
         
         if(len(parsingStack)>0):
         #stack still has elements
@@ -99,40 +100,6 @@ def parse(sentence, chart, glc):
     except:
         print("Syntax error")
     
-    '''
-    
-    for character in sentence.split():
-        last = parsingStack.pop()
-        while(character != last):
-            production = chart[last][character]
-            if(production == "#"):
-                error = True 
-                break
-            if(production != "λ"):
-                for char in production.split()[::-1]:
-                    parsingStack.append(char)
-            last = parsingStack.pop()
-        if(error == True):
-            break
-        sentence = " ".join(sentence.split()[1:])
-    if(len(parsingStack)>0):
-        #stack still has elements
-        last = parsingStack.pop()
-        while(len(parsingStack) > 0 and error == False):
-            production = chart[last]['$']
-            if(production == "#"):
-                error = True 
-                break
-            if(production != "λ"):
-                for char in production.split()[::-1]:
-                    parsingStack.append(char)
-            last = parsingStack.pop()
-
-    if(error == True):
-        print("Syntax error")
-    else:
-        print("The sentence is syntactically correct.")
-    '''
 
 def differentFirstandFollowing(firsts, followings):
     different = True
