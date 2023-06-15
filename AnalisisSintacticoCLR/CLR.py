@@ -200,7 +200,7 @@ class CLR:
                     res = (self.table[stack[-1]])[input[0][0]]
                     if res == None: 
                         aux = []
-                        msg = "Error de sintaxis en la palabra '" + input[0][1] + "' en la fila " + str(input[0][2]) + ".\n"
+                        msg = "Error de sintaxis en la palabra '" + input[0][1] + "' en la linea " + str(input[0][2]) + ".\n"
                         for key, value in self.table[stack[-1]].items():
                             if value != None and key in self.grammar.terminals: 
                                 aux.append(key)

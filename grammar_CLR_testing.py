@@ -208,5 +208,5 @@ se ☾🝳identifier🝳 🜗 🝳identifier🝳☽
 🝓'''
 
 analizador = AnalizadorLexico()
-tokens = analizador.analizar(codigo12)
+tokens = analizador.analizar(codigo5)
 analisis.analyze(tokens)

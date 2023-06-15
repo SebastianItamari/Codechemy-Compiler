@@ -182,7 +182,7 @@ se ☾🝳identifier🝳 🜕 6☽
 🝓'''
 
 codigo12 = '''🜉
-🝳identifier🝳 🝑 12
+🝳identifier🝳 🝑 12 
 🝳identifier🝳 🝑 -2
 🝳identifier🝳 🝑 12
 se ☾🝳identifier🝳 🜗 🝳identifier🝳☽
