@@ -29,6 +29,8 @@ grammar.add_production("Statement", "WhileLoop")
 grammar.add_production("WhileLoop", "dum ☾ Condition ☽ s 🜚 s Program 🜚")
 grammar.add_production("Statement", "ForLoop")
 grammar.add_production("ForLoop", "por ☾ Assignment ; Condition ; Assignment ☽ s 🜚 s Program 🜚")
+grammar.add_production("Statement", "Print")
+grammar.add_production("Print", "presi ☾ Term ☽")
 
 grammar.print_productions()
 
@@ -74,6 +76,9 @@ else:
     print()
     parse("🜉 s por ☾ 🝳 identifier 🝳 🝑 constant ; 🝳 identifier 🝳 🜔 constant ; 🝳 identifier 🝳 🝑 🝳 identifier 🝳 🜂 constant ☽ s 🜚 s se ☾ 🝳 identifier 🝳 🜕 constant ☽ s 🜚 s dum ☾ constant 🜍 constant ☽ s 🜚 s 🝳 identifier 🝳 🝑 constant 🜁 constant s 🜚 s 🜚 s 🜚 s 🝓", chart, grammar)
     print()
+    parse("🜉 s presi ☾ 🝳 identifier 🝳 ☽ s 🝓", chart, grammar)
+
+
     print("\nIncorrect Syntax Cases:")
     parse("🜉 s 🝳 identifier 🝳 constant s 🝳 identifier 🝳 🝑 constant s 🝓", chart, grammar)
     print()
