@@ -6,9 +6,6 @@ from copy import *
 from .Item import *
 from Gramática.GLC import GLC
 
-
-
-
 class SLR:
     def __init__(self,grammar):
         self.grammar = grammar
