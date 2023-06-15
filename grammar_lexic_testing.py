@@ -46,7 +46,7 @@ alie
 🝓'''
 
 codigo2 = '''🜉
-dum ☾🝳nombre🝳 🜗 -20☽ @@@2
+dum ☾🝳nombre🝳 🜗 -20☽
 🜚
 🝳var🝳 🝑 🝳var🝳 🜂 10 🜄 🝳nombre🝳
 🜚
@@ -77,14 +77,11 @@ dum ☾🝳nombre🝳 🜗 -20☽
 analizador = AnalizadorLexico()
 tokens = analizador.analizar(codigo2)
 
-try:
-    for token in tokens:
-        print(token)
+for token in tokens:
+    print(token)
 
-    str = ""
-    for token in tokens:
-        str += " " + token[0]
+str = ""
+for token in tokens:
+    str += " " + token[0]
 
-    print(str)
-except Exception:
-    print("Encountered a lexical error.")
+print(str)

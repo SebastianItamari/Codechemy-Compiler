@@ -1,7 +1,8 @@
 import re
 
 class LexicalError(Exception):
-    pass
+    def __init__ (self, caracter, linea):
+        self.mensaje = f"Error léxico en la línea {linea}. Caracter inválido '{caracter}'"
 
 class AnalizadorLexico:
     def __init__(self):
@@ -52,6 +53,8 @@ class AnalizadorLexico:
                     codigo_fuente = self.matchPattern(self.patron_For, codigo_fuente, 'por')
                 elif re.match(self.patron_While, codigo_fuente):
                     codigo_fuente = self.matchPattern(self.patron_While, codigo_fuente, 'dum')
+                elif re.match(self.patron_print, codigo_fuente):
+                    codigo_fuente = self.matchPattern(self.patron_print, codigo_fuente, 'presi')
                 elif re.match(self.patron_Delimitador, codigo_fuente):
                     codigo_fuente = self.matchPattern(self.patron_Delimitador, codigo_fuente, '🜚')
                 elif re.match(self.patron_nombre, codigo_fuente):
@@ -90,16 +93,13 @@ class AnalizadorLexico:
                     codigo_fuente = self.matchPattern(self.patron_inicio_programa, codigo_fuente, '🜉')
                 elif re.match(self.patron_fin_programa, codigo_fuente):
                     codigo_fuente = self.matchPattern(self.patron_fin_programa, codigo_fuente, '🝓')
-                elif re.match(self.patron_print, codigo_fuente):
-                    codigo_fuente = self.matchPattern(self.patron_print, codigo_fuente, 'presi')
                 elif re.match(self.patron_Espacio_Blanco, codigo_fuente):
                     codigo_fuente = re.sub(self.patron_Espacio_Blanco, '', codigo_fuente, count=1)
                 else:
-                    raise Exception(codigo_fuente[0], self.linea)
+                    raise LexicalError(codigo_fuente[0], self.linea)
             return self.tokens
-        except Exception as lexicalError:
-            caracter, linea = lexicalError.args
-            print(f"Error léxico en la línea {linea}. Caracter inválido '{caracter}'")
+        except LexicalError as lexicalError:
+            print(lexicalError.mensaje)
             exit()
         
     
