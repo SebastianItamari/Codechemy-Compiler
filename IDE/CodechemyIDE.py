@@ -1,12 +1,20 @@
+#standard library imports
 import tkinter as tk
 from tkinter import scrolledtext, Menu, ttk, BOTTOM
 from tkinter.filedialog import asksaveasfilename, askopenfilename
 import re
 
+#local application imports
+from AnalisisSintacticoSLR.SLR import SLR, SLRError
+from AnalisisSintacticoCLR.CLR import CLR, CLRError
+from Análisis_Léxico.Analizador.AnalizadorLexico import AnalizadorLexico, LexicalError
+
 class CodechemyIDE:
-    def __init__(self):
+    def __init__(self, grammar, analyzer="SLR"):
         self.window = tk.Tk()
         self.window.title("IDE CODECHEMY")
+        #self.grammar = grammar
+        self.lexical_analyzer = AnalizadorLexico()
         self.file_path = ''
         self.patterns = [
             (r'🝰', 'green'),  # int
@@ -46,6 +54,13 @@ class CodechemyIDE:
             (r'🜋🜋', 'cyan'),  # /**/
             (r'null', 'green')  # null
         ]
+
+        if analyzer == "SLR":
+            self.syntax_analyzer = SLR(grammar)
+            self.syntax_analyzer.buildTable()
+        elif analyzer == "CLR":
+            self.syntax_analyzer = CLR(grammar)
+            self.syntax_analyzer.buildTable()
 
         self.create_menu()
         self.create_editor()
@@ -138,10 +153,9 @@ class CodechemyIDE:
 
     # Función para abrir archivos
     def open_file(self, event=None):
-        global file_path
         open_path = askopenfilename(filetypes=[("CHEMY File", "*.chemy")])
         if open_path != '':
-            file_path = open_path
+            self.file_path = open_path
             with open(open_path, "r") as file:
                 code = file.read()
                 self.editor.delete("1.0", "end")
@@ -150,12 +164,11 @@ class CodechemyIDE:
 
     # Función para guardar archivos
     def save_file(self, event=None):
-        global file_path
-        if file_path == '':
+        if self.file_path == '':
             save_path = asksaveasfilename(defaultextension=".chemy", filetypes=[("CHEMY File", "*.chemy")])
-            file_path = save_path
+            self.file_path = save_path
         else:
-            save_path = file_path
+            save_path = self.file_path
         if save_path != '':
             with open(save_path, "w") as file:
                 code = self.editor.get("1.0", "end-1c")
@@ -163,9 +176,8 @@ class CodechemyIDE:
 
     # function para guardar archivos con un nombre específico
     def save_as(self, event=None):
-        global file_path
         save_path = asksaveasfilename(defaultextension=".chemy", filetypes=[("CHEMY File", "*.chemy")])
-        file_path = save_path
+        self.file_path = save_path
         if save_path != '':
             with open(save_path, "w") as file:
                 code = self.editor.get("1.0", "end-1c")
@@ -174,8 +186,35 @@ class CodechemyIDE:
     # function para compilar el código del IDE
     def execute_code(self, event=None):
         execution = "Compiling..."
+        print(execution)
         self.output.config(state="normal")
         #aca agregar el resultado de los análisis
+        try:
+            tokens = self.lexical_analyzer.analizar(self.editor.get("1.0", "end-1c"))
+            self.syntax_analyzer.analyze(tokens)
+            print("------------------------")
+            print("¡Instrucción válida!")
+            print("------------------------")
+            execution = execution + "\n¡Instrucción válida!"
+        except LexicalError as lexicalError:
+            print("------------------------")
+            print(lexicalError.mensaje)
+            print("------------------------")
+            execution = execution + "\n" + lexicalError.mensaje
+        except SLRError as syntaxError:
+            print("------------------------")
+            print("Error en analizador sintáctico SLR")
+            print(syntaxError.mensaje)
+            print("------------------------")
+            execution = execution + "\n" + "Error en analizador sintáctico SLR" + "\n" + syntaxError.mensaje
+        except CLRError as syntaxError:
+            print("------------------------")
+            print("Error en analizador sintáctico CLR")
+            print(syntaxError.mensaje)
+            print("------------------------")
+            execution = execution + "\n" + "Error en analizador sintáctico CLR" + "\n" + syntaxError.mensaje
+
+        self.output.delete("1.0", "end")
         self.output.insert("1.0", execution)
         self.output.config(state="disabled")
 
@@ -184,5 +223,3 @@ class CodechemyIDE:
         self.output.config(state="normal")
         self.output.delete("1.0", "end")
         self.output.config(state="disabled")
-
-IDE = CodechemyIDE()

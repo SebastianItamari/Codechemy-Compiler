@@ -122,20 +122,23 @@ class SLR:
                 if (self.table[start])[symbol] == None:
                     (self.table[start])[symbol] = "S" + str(end)
                 else:
-                    print("------------------------")
-                    print("Error en la gramática, no es una válida para este análisis")
-                    print("------------------------")
-                    self.table = {}
-                    return
+                    #print("------------------------")
+                    #print("Error en la gramática, no es una válida para este análisis")
+                    #print("------------------------")
+                    #self.table = {}
+                    #return
+                    raise SLRError("Error de sintaxis: La gramática no es válida para este análisis")
             else:
                 if (self.table[start])[symbol] == None:
                     (self.table[start])[symbol] = (str(end))
                 else:
-                    print("------------------------")
-                    print("Error en la gramática, no es una válida para este análisis")
-                    print("------------------------")
-                    self.table = {}
-                    return
+                    #print("------------------------")
+                    #print("Error en la gramática, no es una válida para este análisis")
+                    #print("------------------------")
+                    #self.table = {}
+                    #return
+                    raise SLRError("Error de sintaxis: La gramática no es válida para este análisis")
+                
         self.grammar.get_first()
         followingS = self.grammar.get_following()
         self.fillReduceTable(followingS)
@@ -153,17 +156,12 @@ class SLR:
                                 if (self.table[item.name])[symbol] == None:
                                     (self.table[item.name])[symbol] = "R"+str(number)
                                 else:
-                                    #print("TABLA")
-                                    #print(self.table[item.name])
-                                    #print("SIGUIENTES")
-                                    #print(self.grammar.followingS[nT])
-                                    #print("R" + str(number) + " en los siguientes de " + nT + " en I" + str(item.name))
-                                    print("------------------------")
-                                    print("Error en la gramática, no es una válida para este análisis")
-                                    #print("Conflicto al armar la tabla, se tomará la primera opción")
-                                    print("------------------------")
-                                    self.table = {}
-                                    return
+                                    #print("------------------------")
+                                    #print("Error en la gramática, no es una válida para este análisis")
+                                    #print("------------------------")
+                                    #self.table = {}
+                                    #return
+                                    raise SLRError("Error de sintaxis: La gramática no es válida para este análisis")
                         
     def fillReduceTable(self,followingS):
         for item in self.listItems:
@@ -180,7 +178,7 @@ class SLR:
             print(str(item) + " -> " + aux)
 
     def analyze(self, instruction):
-        try:
+        #try:
             if self.table != {}:
                 input = instruction.copy()  #Opcional
                 for word in [tupla[0] for tupla in input]:
@@ -198,10 +196,13 @@ class SLR:
                     res = (self.table[stack[-1]])[input[0][0]]
                     if res == None: 
                         aux = []
-                        msg = "Error de sintaxis en la palabra '" + input[0][1] + "' en la linea " + str(input[0][2]) + ".\n"
+                        msg = "Error de sintaxis en la palabra " + repr(input[0][1]) + " en la linea " + str(input[0][2]) + ".\n"
                         for key, value in self.table[stack[-1]].items():
                             if value != None and key in self.grammar.terminals: 
-                                aux.append(key)
+                                if key == "s":
+                                    aux.append(repr("\n"))
+                                else:
+                                    aux.append(key)
                         msg += "Se puede usar " + " ó ".join(aux) + " en su lugar."
                         raise SLRError(msg)
                     if res[0] == 'S': #SHIFT
@@ -227,12 +228,12 @@ class SLR:
                         print("Instrucción válida!")
                         print("------------------------")
                         control = False
-        except SLRError as e:
-            print("------------------------")
-            print("Error en el analizador sintáctico SLR.")
-            print(e.mensaje)
-            print("------------------------")
-            exit()
+        #except SLRError as e:
+            #print("------------------------")
+            #print("Error en el analizador sintáctico SLR.")
+            #print(e.mensaje)
+            #print("------------------------")
+            #exit()
 
 class SLRError(Exception):
     def __init__(self, mensaje):

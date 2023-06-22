@@ -34,12 +34,16 @@ class AnalizadorLexico:
         self.patron_print = r'presi'
         self.patron_Espacio_Blanco = r'([\t\r\f\v\s])'
 
-        self.tokens = []
-        self.linea = 1
-        self.columna = 1
+        #self.tokens = []
+        #self.linea = 1
+        #self.columna = 1
 
     def analizar(self,codigo_fuente):
-        try:
+        #try:
+            self.tokens = []
+            self.linea = 1
+            self.columna = 1
+
             while codigo_fuente:
                 if re.match(self.patron_se, codigo_fuente):
                     codigo_fuente = self.matchPattern(self.patron_se, codigo_fuente, 'se') 
@@ -98,9 +102,9 @@ class AnalizadorLexico:
                 else:
                     raise LexicalError(codigo_fuente[0], self.linea)
             return self.tokens
-        except LexicalError as lexicalError:
-            print(lexicalError.mensaje)
-            exit()
+        #except LexicalError as lexicalError:
+            #print(lexicalError.mensaje)
+            #exit()
         
     
     def matchPattern(self, pattern, codigo_fuente, token):
