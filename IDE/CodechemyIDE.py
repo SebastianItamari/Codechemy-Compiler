@@ -254,7 +254,7 @@ class CodechemyIDE:
         open_path = askopenfilename(filetypes=[("CHEMY File", "*.chemy")])
         if open_path != '':
             self.file_path = open_path
-            with open(open_path, "r") as file:
+            with open(open_path, "r", encoding="utf-8") as file:
                 code = file.read()
                 self.editor.delete("1.0", "end")
                 self.editor.insert("1.0", code)
@@ -277,7 +277,7 @@ class CodechemyIDE:
         save_path = asksaveasfilename(defaultextension=".chemy", filetypes=[("CHEMY File", "*.chemy")])
         self.file_path = save_path
         if save_path != '':
-            with open(save_path, "w") as file:
+            with open(save_path, "w", encoding="utf-8") as file:
                 code = self.editor.get("1.0", "end-1c")
                 file.write(code)
 
