@@ -18,7 +18,6 @@ class CodechemyIDE:
         self.file_path = ''
         
         self.lightpattern = [
-<<<<<<< HEAD
             (r'🝰', '#f58442'),  # int
             (r'🝯', '#f58442'),  # bool
             (r'🝮', '#f58442'),  # char
@@ -26,15 +25,6 @@ class CodechemyIDE:
             (r'♈︎', '#f58442'),  # double
             (r'♋︎', '#f58442'),  # float
             (r'♊︎', '#f58442'),  # array
-=======
-            (r'🝰', '#6E75A8'),  # int
-            (r'🝯', '#6E75A8'),  # bool
-            (r'🝮', '#6E75A8'),  # char
-            (r'♒︎', '#6E75A8'),  # string
-            (r'♈︎', '#6E75A8'),  # double
-            (r'♋︎', '#6E75A8'),  # float
-            (r'♊︎', '#6E75A8'),  # array
->>>>>>> a0a84c5622613ffa37da1a6df57fceba6874e469
             (r'se', '#0B6E4F'),  # if
             (r'alie', '#0B6E4F'),  # else
             (r'por', '#0B6E4F'),  # for
@@ -186,6 +176,7 @@ class CodechemyIDE:
         symbol_menu.add_command(label="🜔 >", command=lambda: self.insert_symbol("🜔"))
         symbol_menu.add_command(label="🜕 <", command=lambda: self.insert_symbol("🜕"))
         symbol_menu.add_command(label="🜖 >=", command=lambda: self.insert_symbol("🜖"))
+        
         symbol_menu.add_command(label="🜗 <=", command=lambda: self.insert_symbol("🜗"))
         symbol_menu.add_command(label="🜍 !=", command=lambda: self.insert_symbol("🜍"))
         symbol_menu.add_command(label="🝱 !", command=lambda: self.insert_symbol("🝱"))
@@ -333,6 +324,7 @@ class CodechemyIDE:
         # Insert the symbol at the current cursor position in the editor
         cursor_pos = self.editor.index(tk.INSERT)
         self.editor.insert(cursor_pos, symbol)
+        self.highlight_syntax()
 
     
 
