@@ -18,14 +18,14 @@ class CodechemyIDE:
         self.file_path = ''
         
         self.lightpattern = [
-            (r'🝰', '##6E75A8'),  # int
-            (r'🝯', '##6E75A8'),  # bool
-            (r'🝮', '#6E75A8'),  # char
-            (r'♒︎', '#6E75A8'),  # string
-            (r'♈︎', '#6E75A8'),  # double
-            (r'♋︎', '#6E75A8'),  # float
-            (r'♊︎', '#6E75A8'),  # array
-            (r'se', '##0B6E4F'),  # if
+            (r'🝰', '#f58442'),  # int
+            (r'🝯', '#f58442'),  # bool
+            (r'🝮', '#f58442'),  # char
+            (r'♒︎', '#f58442'),  # string
+            (r'♈︎', '#f58442'),  # double
+            (r'♋︎', '#f58442'),  # float
+            (r'♊︎', '#f58442'),  # array
+            (r'se', '#0B6E4F'),  # if
             (r'alie', '#0B6E4F'),  # else
             (r'por', '#0B6E4F'),  # for
             (r'dum', '#0B6E4F'),  # while
