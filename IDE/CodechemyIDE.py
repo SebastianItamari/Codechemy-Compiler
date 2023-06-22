@@ -16,7 +16,46 @@ class CodechemyIDE:
         #self.grammar = grammar
         self.lexical_analyzer = AnalizadorLexico()
         self.file_path = ''
-        self.patterns = [
+        
+        self.lightpattern = [
+            (r'🝰', '##6E75A8'),  # int
+            (r'🝯', '##6E75A8'),  # bool
+            (r'🝮', '#6E75A8'),  # char
+            (r'♒︎', '#6E75A8'),  # string
+            (r'♈︎', '#6E75A8'),  # double
+            (r'♋︎', '#6E75A8'),  # float
+            (r'♊︎', '#6E75A8'),  # array
+            (r'se', '##0B6E4F'),  # if
+            (r'alie', '#0B6E4F'),  # else
+            (r'por', '#0B6E4F'),  # for
+            (r'dum', '#0B6E4F'),  # while
+            (r'rompi', '#0B6E4F'),  # break
+            (r'reveni', '#0B6E4F'),  # return
+            (r'🜂', '##261447'),  # +
+            (r'🜄', '#261447'),  # -
+            (r'🜁', '#261447'),  # *
+            (r'🜃', '#261447'),  # /
+            (r'🜅', '#261447'),  # %
+            (r'malvera', 'red'),  # false
+            (r'vera', 'red'),  # true
+            (r'🜓', '#261447'),  # &&
+            (r'🝘', '#261447'),  # ||
+            (r'🜎', '#261447'),  # ==
+            (r'🜔', '#261447'),  # >
+            (r'🜕', '#261447'),  # <
+            (r'🜖', '#261447'),  # >=
+            (r'🜗', '#261447'),  # <=
+            (r'🜍', '#261447'),  # !=
+            (r'🝱', 'red'),  # !
+            (r'☾', 'magenta'),  # (
+            (r'☽', 'magenta'),  # )
+            (r'🝳', '#6E75A8'),  # declaración (nombreVariable)
+            (r'🝑', '#6E75A8'),  # asignación (variable = valor)
+            (r'🜌', 'cyan'),  # //
+            (r'🜋🜋', 'cyan'),  # /**/
+            (r'null', '#6E75A8')  # null
+        ]
+        self.darkpattern = [
             (r'🝰', 'green'),  # int
             (r'🝯', 'green'),  # bool
             (r'🝮', 'green'),  # char
@@ -24,12 +63,12 @@ class CodechemyIDE:
             (r'♈︎', 'green'),  # double
             (r'♋︎', 'green'),  # float
             (r'♊︎', 'green'),  # array
-            (r'se', 'blue'),  # if
-            (r'alie', 'blue'),  # else
-            (r'por', 'blue'),  # for
-            (r'dum', 'blue'),  # while
-            (r'rompi', 'blue'),  # break
-            (r'reveni', 'blue'),  # return
+            (r'se', 'magenta'),  # if
+            (r'alie', 'magenta'),  # else
+            (r'por', 'magenta'),  # for
+            (r'dum', 'magenta'),  # while
+            (r'rompi', 'magenta'),  # break
+            (r'reveni', 'magenta'),  # return
             (r'🜂', 'yellow'),  # +
             (r'🜄', 'yellow'),  # -
             (r'🜁', 'yellow'),  # *
@@ -52,9 +91,9 @@ class CodechemyIDE:
             (r'🝑', 'green'),  # asignación (variable = valor)
             (r'🜌', 'cyan'),  # //
             (r'🜋🜋', 'cyan'),  # /**/
-            (r'null', 'green')  # null
+            (r'null', 'yellow')  # null
         ]
-
+        self.patternUsed=self.lightpattern
         if analyzer == "SLR":
             self.syntax_analyzer = SLR(grammar)
             self.syntax_analyzer.buildTable()
@@ -70,6 +109,21 @@ class CodechemyIDE:
     
         # Mostrar la ventana
         self.window.mainloop()
+    
+    # function for light mode window
+    def light(self):
+        self.editor.config(fg="black",bg="white")
+        self.window.config(bg="white")
+        self.patternUsed=self.lightpattern
+        self.highlight_syntax()
+
+
+    # function for dark mode window
+    def dark(self):
+        self.editor.config(fg="white", bg="black")
+        self.window.config(bg="black")
+        self.patternUsed=self.darkpattern
+        self.highlight_syntax()
 
     def create_menu(self):
         # Crear y configurar menú
@@ -79,8 +133,10 @@ class CodechemyIDE:
         # Crear submenús y añadirlos al menú principal
         file_menu = Menu(menu, tearoff=0)
         output_menu = Menu(menu, tearoff=0)
+        theme_menu = Menu(menu, tearoff=0)
         menu.add_cascade(label="File", menu=file_menu)
         menu.add_cascade(label="Output", menu=output_menu)
+        menu.add_cascade(label="Theme", menu=theme_menu)
 
         # Configurar file_menu
         file_menu.add_command(label="Open", accelerator="Ctrl+O", command=self.open_file)
@@ -94,6 +150,10 @@ class CodechemyIDE:
         output_menu.add_command(label="Execute", accelerator="F5", command=self.execute_code)
         output_menu.add_separator()
         output_menu.add_command(label="Clean", accelerator="F4", command=self.clean_output)
+
+        # Comando para cambiar theme
+        theme_menu.add_command(label="Light", command= self.light)
+        theme_menu.add_command(label="Dark", command= self.dark)
 
     def create_editor(self):
         self.editor = scrolledtext.ScrolledText(self.window, width=80, height=20, font=("Courier New", 12))
@@ -127,8 +187,8 @@ class CodechemyIDE:
         #if event.keysym == "space" or event.keysym == "Return":
             text = self.editor.get("1.0", "end-1c")
             self.editor.tag_remove("highlight", "1.0", "end")  # Eliminar todas las etiquetas de resaltado existentes
-            
-            for i, (pattern, color) in enumerate(self.patterns):
+
+            for i, (pattern, color) in enumerate(self.patternUsed):
                 matches = re.finditer(pattern, text)
                 for match in matches:
                     start = f"1.0+{match.start()}c"
@@ -223,3 +283,8 @@ class CodechemyIDE:
         self.output.config(state="normal")
         self.output.delete("1.0", "end")
         self.output.config(state="disabled")
+
+    
+
+
+    
