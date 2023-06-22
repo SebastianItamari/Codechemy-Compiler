@@ -18,34 +18,34 @@ class CodechemyIDE:
         self.file_path = ''
         
         self.lightpattern = [
-            (r'🝰', '#f58442'),  # int
-            (r'🝯', '#f58442'),  # bool
-            (r'🝮', '#f58442'),  # char
-            (r'♒︎', '#f58442'),  # string
-            (r'♈︎', '#f58442'),  # double
-            (r'♋︎', '#f58442'),  # float
-            (r'♊︎', '#f58442'),  # array
-            (r'se', '#0B6E4F'),  # if
-            (r'alie', '#0B6E4F'),  # else
-            (r'por', '#0B6E4F'),  # for
-            (r'dum', '#0B6E4F'),  # while
-            (r'rompi', '#0B6E4F'),  # break
-            (r'reveni', '#0B6E4F'),  # return
-            (r'🜂', '#261447'),  # +
-            (r'🜄', '#261447'),  # -
-            (r'🜁', '#261447'),  # *
-            (r'🜃', '#261447'),  # /
-            (r'🜅', '#261447'),  # %
+            (r'🝰', 'Dark green'),  # int
+            (r'🝯', 'Dark green'),  # bool
+            (r'🝮', 'Dark green'),  # char
+            (r'♒︎', 'Dark green'),  # string
+            (r'♈︎', 'Dark green'),  # double
+            (r'♋︎', 'Dark green'),  # float
+            (r'♊︎', 'Dark green'),  # array
+            (r'se', 'orange'),  # if
+            (r'alie', 'orange'),  # else
+            (r'por', 'orange'),  # for
+            (r'dum', 'orange'),  # while
+            (r'rompi', 'orange'),  # break
+            (r'reveni', 'orange'),  # return
+            (r'🜂', 'purple'),  # +
+            (r'🜄', 'purple'),  # -
+            (r'🜁', 'purple'),  # *
+            (r'🜃', 'purple'),  # /
+            (r'🜅', 'purple'),  # %
             (r'malvera', 'red'),  # false
             (r'vera', 'red'),  # true
-            (r'🜓', '#261447'),  # &&
-            (r'🝘', '#261447'),  # ||
-            (r'🜎', '#261447'),  # ==
-            (r'🜔', '#261447'),  # >
-            (r'🜕', '#261447'),  # <
-            (r'🜖', '#261447'),  # >=
-            (r'🜗', '#261447'),  # <=
-            (r'🜍', '#261447'),  # !=
+            (r'🜓', 'purple'),  # &&
+            (r'🝘', 'purple'),  # ||
+            (r'🜎', 'purple'),  # ==
+            (r'🜔', 'purple'),  # >
+            (r'🜕', 'purple'),  # <
+            (r'🜖', 'purple'),  # >=
+            (r'🜗', 'purple'),  # <=
+            (r'🜍', 'purple'),  # !=
             (r'🝱', 'red'),  # !
             (r'☾', 'magenta'),  # (
             (r'☽', 'magenta'),  # )
@@ -115,6 +115,7 @@ class CodechemyIDE:
         self.editor.config(fg="black",bg="white")
         self.window.config(bg="white")
         self.patternUsed=self.lightpattern
+        self.output.config(fg="black",bg="white")
         self.highlight_syntax()
 
 
@@ -253,7 +254,7 @@ class CodechemyIDE:
         open_path = askopenfilename(filetypes=[("CHEMY File", "*.chemy")])
         if open_path != '':
             self.file_path = open_path
-            with open(open_path, "r") as file:
+            with open(open_path, "r", encoding="utf-8") as file:
                 code = file.read()
                 self.editor.delete("1.0", "end")
                 self.editor.insert("1.0", code)
@@ -276,7 +277,7 @@ class CodechemyIDE:
         save_path = asksaveasfilename(defaultextension=".chemy", filetypes=[("CHEMY File", "*.chemy")])
         self.file_path = save_path
         if save_path != '':
-            with open(save_path, "w") as file:
+            with open(save_path, "w", encoding="utf-8") as file:
                 code = self.editor.get("1.0", "end-1c")
                 file.write(code)
 
