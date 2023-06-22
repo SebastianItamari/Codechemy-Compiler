@@ -70,6 +70,7 @@ grammar.add_production("Print", "presi ☾ Term ☽")
 
 analisis = SLR(grammar)
 analisis.buildTable()
+#analisis.printGoto()
 #analisis.printTable()
 
 # INSTRUCCIONES VÁLIDAS #
@@ -197,6 +198,10 @@ se ☾🝳identifier🝳 🜗 🝳identifier🝳☽
 🜚
 🝳identifier🝳 🝑 🝳identifier🝳
 🜚
+🝓'''
+
+codigo13 = '''🜉
+🝳var🝳 🝑 2 🜂 3 🜂 4
 🝓'''
 
 analizador = AnalizadorLexico()
