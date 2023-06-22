@@ -18,6 +18,7 @@ class CodechemyIDE:
         self.file_path = ''
         
         self.lightpattern = [
+<<<<<<< HEAD
             (r'🝰', '#f58442'),  # int
             (r'🝯', '#f58442'),  # bool
             (r'🝮', '#f58442'),  # char
@@ -25,13 +26,22 @@ class CodechemyIDE:
             (r'♈︎', '#f58442'),  # double
             (r'♋︎', '#f58442'),  # float
             (r'♊︎', '#f58442'),  # array
+=======
+            (r'🝰', '#6E75A8'),  # int
+            (r'🝯', '#6E75A8'),  # bool
+            (r'🝮', '#6E75A8'),  # char
+            (r'♒︎', '#6E75A8'),  # string
+            (r'♈︎', '#6E75A8'),  # double
+            (r'♋︎', '#6E75A8'),  # float
+            (r'♊︎', '#6E75A8'),  # array
+>>>>>>> a0a84c5622613ffa37da1a6df57fceba6874e469
             (r'se', '#0B6E4F'),  # if
             (r'alie', '#0B6E4F'),  # else
             (r'por', '#0B6E4F'),  # for
             (r'dum', '#0B6E4F'),  # while
             (r'rompi', '#0B6E4F'),  # break
             (r'reveni', '#0B6E4F'),  # return
-            (r'🜂', '##261447'),  # +
+            (r'🜂', '#261447'),  # +
             (r'🜄', '#261447'),  # -
             (r'🜁', '#261447'),  # *
             (r'🜃', '#261447'),  # /
@@ -165,6 +175,27 @@ class CodechemyIDE:
         symbol_menu.add_command(label="♈︎ double", command=lambda: self.insert_symbol("♈︎"))
         symbol_menu.add_command(label="♋︎ float", command=lambda: self.insert_symbol("♋︎"))
         symbol_menu.add_command(label="♊︎ array", command=lambda: self.insert_symbol("♊︎"))
+        symbol_menu.add_command(label="🜂 +", command=lambda: self.insert_symbol("🜂"))
+
+        symbol_menu.add_command(label="🜄 -", command=lambda: self.insert_symbol("🜄"))
+        symbol_menu.add_command(label="🜁 *", command=lambda: self.insert_symbol("🜁"))
+        symbol_menu.add_command(label="🜃 /", command=lambda: self.insert_symbol("🜃"))
+        symbol_menu.add_command(label="🜅 %", command=lambda: self.insert_symbol("🜅"))
+        symbol_menu.add_command(label="🜓 &&", command=lambda: self.insert_symbol("🜓"))
+        symbol_menu.add_command(label="🝘 ||", command=lambda: self.insert_symbol("🝘"))
+        symbol_menu.add_command(label="🜎 ==", command=lambda: self.insert_symbol("🜎"))
+        symbol_menu.add_command(label="🜔 >", command=lambda: self.insert_symbol("🜔"))
+        symbol_menu.add_command(label="🜕 <", command=lambda: self.insert_symbol("🜕"))
+        symbol_menu.add_command(label="🜖 >=", command=lambda: self.insert_symbol("🜖"))
+        symbol_menu.add_command(label="🜗 <=", command=lambda: self.insert_symbol("🜗"))
+        symbol_menu.add_command(label="🜍 !=", command=lambda: self.insert_symbol("🜍"))
+        symbol_menu.add_command(label="🝱 !", command=lambda: self.insert_symbol("🝱"))
+        symbol_menu.add_command(label="☾ (", command=lambda: self.insert_symbol("☾"))
+        symbol_menu.add_command(label="☽ )", command=lambda: self.insert_symbol("☽"))
+        symbol_menu.add_command(label="🝳 Declaracion", command=lambda: self.insert_symbol("🝳"))
+        symbol_menu.add_command(label="🝑 Asignacion", command=lambda: self.insert_symbol("🝑"))
+        symbol_menu.add_command(label="🜌 //", command=lambda: self.insert_symbol("🜌"))
+        symbol_menu.add_command(label="🜋🜋 /**/", command=lambda: self.insert_symbol("🜋🜋"))
 
     def create_editor(self):
         self.editor = scrolledtext.ScrolledText(self.window, width=80, height=20, font=("Courier New", 12))
@@ -241,7 +272,7 @@ class CodechemyIDE:
         else:
             save_path = self.file_path
         if save_path != '':
-            with open(save_path, "w") as file:
+            with open(save_path, "w", encoding="utf-8") as file:
                 code = self.editor.get("1.0", "end-1c")
                 file.write(code)
 
