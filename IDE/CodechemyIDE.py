@@ -166,7 +166,6 @@ class CodechemyIDE:
         symbol_menu.add_command(label="♋︎ float", command=lambda: self.insert_symbol("♋︎"))
         symbol_menu.add_command(label="♊︎ array", command=lambda: self.insert_symbol("♊︎"))
         symbol_menu.add_command(label="🜂 +", command=lambda: self.insert_symbol("🜂"))
-
         symbol_menu.add_command(label="🜄 -", command=lambda: self.insert_symbol("🜄"))
         symbol_menu.add_command(label="🜁 *", command=lambda: self.insert_symbol("🜁"))
         symbol_menu.add_command(label="🜃 /", command=lambda: self.insert_symbol("🜃"))
@@ -186,6 +185,10 @@ class CodechemyIDE:
         symbol_menu.add_command(label="🝑 Asignacion", command=lambda: self.insert_symbol("🝑"))
         symbol_menu.add_command(label="🜌 //", command=lambda: self.insert_symbol("🜌"))
         symbol_menu.add_command(label="🜋🜋 /**/", command=lambda: self.insert_symbol("🜋🜋"))
+
+        # Insert column break after every 10 commands
+        for i in range(1, 10):
+            symbol_menu.entryconfigure(i * 6, columnbreak=tk.TRUE)
 
     def create_editor(self):
         self.editor = scrolledtext.ScrolledText(self.window, width=80, height=20, font=("Courier New", 12))
