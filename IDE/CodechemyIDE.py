@@ -134,9 +134,11 @@ class CodechemyIDE:
         file_menu = Menu(menu, tearoff=0)
         output_menu = Menu(menu, tearoff=0)
         theme_menu = Menu(menu, tearoff=0)
+        symbol_menu = Menu(menu, tearoff=0)
         menu.add_cascade(label="File", menu=file_menu)
         menu.add_cascade(label="Output", menu=output_menu)
         menu.add_cascade(label="Theme", menu=theme_menu)
+        menu.add_cascade(label="Dictionary", menu=symbol_menu)
 
         # Configurar file_menu
         file_menu.add_command(label="Open", accelerator="Ctrl+O", command=self.open_file)
@@ -154,6 +156,15 @@ class CodechemyIDE:
         # Comando para cambiar theme
         theme_menu.add_command(label="Light", command= self.light)
         theme_menu.add_command(label="Dark", command= self.dark)
+
+        #Comando para insertar simbolos
+        symbol_menu.add_command(label="🝰 int", command=lambda: self.insert_symbol("🝰"))
+        symbol_menu.add_command(label="🝯 bool", command=lambda: self.insert_symbol("🝯"))
+        symbol_menu.add_command(label="🝮 char", command=lambda: self.insert_symbol("🝮"))
+        symbol_menu.add_command(label="♒︎ string", command=lambda: self.insert_symbol("♒︎"))
+        symbol_menu.add_command(label="♈︎ double", command=lambda: self.insert_symbol("♈︎"))
+        symbol_menu.add_command(label="♋︎ float", command=lambda: self.insert_symbol("♋︎"))
+        symbol_menu.add_command(label="♊︎ array", command=lambda: self.insert_symbol("♊︎"))
 
     def create_editor(self):
         self.editor = scrolledtext.ScrolledText(self.window, width=80, height=20, font=("Courier New", 12))
@@ -283,6 +294,11 @@ class CodechemyIDE:
         self.output.config(state="normal")
         self.output.delete("1.0", "end")
         self.output.config(state="disabled")
+
+    def insert_symbol(self, symbol):
+        # Insert the symbol at the current cursor position in the editor
+        cursor_pos = self.editor.index(tk.INSERT)
+        self.editor.insert(cursor_pos, symbol)
 
     
 
