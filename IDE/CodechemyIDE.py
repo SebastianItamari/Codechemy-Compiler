@@ -49,20 +49,20 @@ class CodechemyIDE:
             (r'🝱', 'red'),  # !
             (r'☾', 'magenta'),  # (
             (r'☽', 'magenta'),  # )
-            (r'🝳', '#6E75A8'),  # declaración (nombreVariable)
-            (r'🝑', '#6E75A8'),  # asignación (variable = valor)
+            (r'🝳', '#151715'),  # declaración (nombreVariable)
+            (r'🝑', '#151715'),  # asignación (variable = valor)
             (r'🜌', 'cyan'),  # //
             (r'🜋🜋', 'cyan'),  # /**/
-            (r'null', '#6E75A8')  # null
+            (r'null', '#151715')  # null
         ]
         self.darkpattern = [
-            (r'🝰', 'green'),  # int
-            (r'🝯', 'green'),  # bool
-            (r'🝮', 'green'),  # char
-            (r'♒︎', 'green'),  # string
-            (r'♈︎', 'green'),  # double
-            (r'♋︎', 'green'),  # float
-            (r'♊︎', 'green'),  # array
+            (r'🝰', '#f58442'),  # int
+            (r'🝯', '#f58442'),  # bool
+            (r'🝮', '#f58442'),  # char
+            (r'♒︎', '#f58442'),  # string
+            (r'♈︎', '#f58442'),  # double
+            (r'♋︎', '#f58442'),  # float
+            (r'♊︎', '#f58442'),  # array
             (r'se', 'magenta'),  # if
             (r'alie', 'magenta'),  # else
             (r'por', 'magenta'),  # for
@@ -87,8 +87,8 @@ class CodechemyIDE:
             (r'🝱', 'red'),  # !
             (r'☾', 'magenta'),  # (
             (r'☽', 'magenta'),  # )
-            (r'🝳', 'green'),  # declaración (nombreVariable)
-            (r'🝑', 'green'),  # asignación (variable = valor)
+            (r'🝳', '#03fc4e'),  # declaración (nombreVariable)
+            (r'🝑', '#03fc4e'),  # asignación (variable = valor)
             (r'🜌', 'cyan'),  # //
             (r'🜋🜋', 'cyan'),  # /**/
             (r'null', 'yellow')  # null
@@ -120,8 +120,9 @@ class CodechemyIDE:
 
     # function for dark mode window
     def dark(self):
-        self.editor.config(fg="white", bg="black")
+        self.editor.config(fg="white", bg="black", insertbackground="white")
         self.window.config(bg="black")
+        self.output.config(bg="black", fg="white")
         self.patternUsed=self.darkpattern
         self.highlight_syntax()
 
