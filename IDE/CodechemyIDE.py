@@ -18,51 +18,51 @@ class CodechemyIDE:
         self.file_path = ''
         
         self.lightpattern = [
-            (r'🝰', '#6E75A8'),  # int
-            (r'🝯', '#6E75A8'),  # bool
-            (r'🝮', '#6E75A8'),  # char
-            (r'♒︎', '#6E75A8'),  # string
-            (r'♈︎', '#6E75A8'),  # double
-            (r'♋︎', '#6E75A8'),  # float
-            (r'♊︎', '#6E75A8'),  # array
-            (r'se', '#0B6E4F'),  # if
-            (r'alie', '#0B6E4F'),  # else
-            (r'por', '#0B6E4F'),  # for
-            (r'dum', '#0B6E4F'),  # while
-            (r'rompi', '#0B6E4F'),  # break
-            (r'reveni', '#0B6E4F'),  # return
-            (r'🜂', '#261447'),  # +
-            (r'🜄', '#261447'),  # -
-            (r'🜁', '#261447'),  # *
-            (r'🜃', '#261447'),  # /
-            (r'🜅', '#261447'),  # %
+            (r'🝰', 'Dark green'),  # int
+            (r'🝯', 'Dark green'),  # bool
+            (r'🝮', 'Dark green'),  # char
+            (r'♒︎', 'Dark green'),  # string
+            (r'♈︎', 'Dark green'),  # double
+            (r'♋︎', 'Dark green'),  # float
+            (r'♊︎', 'Dark green'),  # array
+            (r'se', 'orange'),  # if
+            (r'alie', 'orange'),  # else
+            (r'por', 'orange'),  # for
+            (r'dum', 'orange'),  # while
+            (r'rompi', 'orange'),  # break
+            (r'reveni', 'orange'),  # return
+            (r'🜂', 'purple'),  # +
+            (r'🜄', 'purple'),  # -
+            (r'🜁', 'purple'),  # *
+            (r'🜃', 'purple'),  # /
+            (r'🜅', 'purple'),  # %
             (r'malvera', 'red'),  # false
             (r'vera', 'red'),  # true
-            (r'🜓', '#261447'),  # &&
-            (r'🝘', '#261447'),  # ||
-            (r'🜎', '#261447'),  # ==
-            (r'🜔', '#261447'),  # >
-            (r'🜕', '#261447'),  # <
-            (r'🜖', '#261447'),  # >=
-            (r'🜗', '#261447'),  # <=
-            (r'🜍', '#261447'),  # !=
+            (r'🜓', 'purple'),  # &&
+            (r'🝘', 'purple'),  # ||
+            (r'🜎', 'purple'),  # ==
+            (r'🜔', 'purple'),  # >
+            (r'🜕', 'purple'),  # <
+            (r'🜖', 'purple'),  # >=
+            (r'🜗', 'purple'),  # <=
+            (r'🜍', 'purple'),  # !=
             (r'🝱', 'red'),  # !
             (r'☾', 'magenta'),  # (
             (r'☽', 'magenta'),  # )
-            (r'🝳', '#6E75A8'),  # declaración (nombreVariable)
-            (r'🝑', '#6E75A8'),  # asignación (variable = valor)
+            (r'🝳', '#151715'),  # declaración (nombreVariable)
+            (r'🝑', '#151715'),  # asignación (variable = valor)
             (r'🜌', 'cyan'),  # //
             (r'🜋🜋', 'cyan'),  # /**/
-            (r'null', '#6E75A8')  # null
+            (r'null', '#151715')  # null
         ]
         self.darkpattern = [
-            (r'🝰', 'green'),  # int
-            (r'🝯', 'green'),  # bool
-            (r'🝮', 'green'),  # char
-            (r'♒︎', 'green'),  # string
-            (r'♈︎', 'green'),  # double
-            (r'♋︎', 'green'),  # float
-            (r'♊︎', 'green'),  # array
+            (r'🝰', '#f58442'),  # int
+            (r'🝯', '#f58442'),  # bool
+            (r'🝮', '#f58442'),  # char
+            (r'♒︎', '#f58442'),  # string
+            (r'♈︎', '#f58442'),  # double
+            (r'♋︎', '#f58442'),  # float
+            (r'♊︎', '#f58442'),  # array
             (r'se', 'magenta'),  # if
             (r'alie', 'magenta'),  # else
             (r'por', 'magenta'),  # for
@@ -87,8 +87,8 @@ class CodechemyIDE:
             (r'🝱', 'red'),  # !
             (r'☾', 'magenta'),  # (
             (r'☽', 'magenta'),  # )
-            (r'🝳', 'green'),  # declaración (nombreVariable)
-            (r'🝑', 'green'),  # asignación (variable = valor)
+            (r'🝳', '#03fc4e'),  # declaración (nombreVariable)
+            (r'🝑', '#03fc4e'),  # asignación (variable = valor)
             (r'🜌', 'cyan'),  # //
             (r'🜋🜋', 'cyan'),  # /**/
             (r'null', 'yellow')  # null
@@ -115,13 +115,15 @@ class CodechemyIDE:
         self.editor.config(fg="black",bg="white")
         self.window.config(bg="white")
         self.patternUsed=self.lightpattern
+        self.output.config(fg="black",bg="white")
         self.highlight_syntax()
 
 
     # function for dark mode window
     def dark(self):
-        self.editor.config(fg="white", bg="black")
+        self.editor.config(fg="white", bg="black", insertbackground="white")
         self.window.config(bg="black")
+        self.output.config(bg="black", fg="white")
         self.patternUsed=self.darkpattern
         self.highlight_syntax()
 
@@ -185,6 +187,10 @@ class CodechemyIDE:
         symbol_menu.add_command(label="🝑 Asignacion", accelerator="Ctrl-Y", command=lambda: self.insert_symbol("🝑"))
         symbol_menu.add_command(label="🜌 //", accelerator="Ctrl-Z", command=lambda: self.insert_symbol("🜌"))
         symbol_menu.add_command(label="🜋🜋 /**/", accelerator="F7", command=lambda: self.insert_symbol("🜋🜋"))
+
+        # Insert column break after every 10 commands
+        for i in range(1, 10):
+            symbol_menu.entryconfigure(i * 6, columnbreak=tk.TRUE)
 
     def create_editor(self):
         self.editor = scrolledtext.ScrolledText(self.window, width=80, height=20, font=("Courier New", 12))
@@ -293,7 +299,7 @@ class CodechemyIDE:
         open_path = askopenfilename(filetypes=[("CHEMY File", "*.chemy")])
         if open_path != '':
             self.file_path = open_path
-            with open(open_path, "r") as file:
+            with open(open_path, "r", encoding="utf-8") as file:
                 code = file.read()
                 self.editor.delete("1.0", "end")
                 self.editor.insert("1.0", code)
@@ -307,7 +313,7 @@ class CodechemyIDE:
         else:
             save_path = self.file_path
         if save_path != '':
-            with open(save_path, "w") as file:
+            with open(save_path, "w", encoding="utf-8") as file:
                 code = self.editor.get("1.0", "end-1c")
                 file.write(code)
 
@@ -316,7 +322,7 @@ class CodechemyIDE:
         save_path = asksaveasfilename(defaultextension=".chemy", filetypes=[("CHEMY File", "*.chemy")])
         self.file_path = save_path
         if save_path != '':
-            with open(save_path, "w") as file:
+            with open(save_path, "w", encoding="utf-8") as file:
                 code = self.editor.get("1.0", "end-1c")
                 file.write(code)
 
@@ -365,6 +371,7 @@ class CodechemyIDE:
         # Insert the symbol at the current cursor position in the editor
         cursor_pos = self.editor.index(tk.INSERT)
         self.editor.insert(cursor_pos, symbol)
+        self.highlight_syntax()
 
     
 
