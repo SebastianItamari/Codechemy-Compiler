@@ -18,42 +18,42 @@ class CodechemyIDE:
         self.file_path = ''
         
         self.lightpattern = [
-            (r'🝰', '##6E75A8'),  # int
-            (r'🝯', '##6E75A8'),  # bool
-            (r'🝮', '#6E75A8'),  # char
-            (r'♒︎', '#6E75A8'),  # string
-            (r'♈︎', '#6E75A8'),  # double
-            (r'♋︎', '#6E75A8'),  # float
-            (r'♊︎', '#6E75A8'),  # array
-            (r'se', '##0B6E4F'),  # if
-            (r'alie', '#0B6E4F'),  # else
-            (r'por', '#0B6E4F'),  # for
-            (r'dum', '#0B6E4F'),  # while
-            (r'rompi', '#0B6E4F'),  # break
-            (r'reveni', '#0B6E4F'),  # return
-            (r'🜂', '##261447'),  # +
-            (r'🜄', '#261447'),  # -
-            (r'🜁', '#261447'),  # *
-            (r'🜃', '#261447'),  # /
-            (r'🜅', '#261447'),  # %
+            (r'🝰', 'Dark green'),  # int
+            (r'🝯', 'Dark green'),  # bool
+            (r'🝮', 'Dark green'),  # char
+            (r'♒︎', 'Dark green'),  # string
+            (r'♈︎', 'Dark green'),  # double
+            (r'♋︎', 'Dark green'),  # float
+            (r'♊︎', 'Dark green'),  # array
+            (r'se', 'orange'),  # if
+            (r'alie', 'orange'),  # else
+            (r'por', 'orange'),  # for
+            (r'dum', 'orange'),  # while
+            (r'rompi', 'orange'),  # break
+            (r'reveni', 'orange'),  # return
+            (r'🜂', 'purple'),  # +
+            (r'🜄', 'purple'),  # -
+            (r'🜁', 'purple'),  # *
+            (r'🜃', 'purple'),  # /
+            (r'🜅', 'purple'),  # %
             (r'malvera', 'red'),  # false
             (r'vera', 'red'),  # true
-            (r'🜓', '#261447'),  # &&
-            (r'🝘', '#261447'),  # ||
-            (r'🜎', '#261447'),  # ==
-            (r'🜔', '#261447'),  # >
-            (r'🜕', '#261447'),  # <
-            (r'🜖', '#261447'),  # >=
-            (r'🜗', '#261447'),  # <=
-            (r'🜍', '#261447'),  # !=
+            (r'🜓', 'purple'),  # &&
+            (r'🝘', 'purple'),  # ||
+            (r'🜎', 'purple'),  # ==
+            (r'🜔', 'purple'),  # >
+            (r'🜕', 'purple'),  # <
+            (r'🜖', 'purple'),  # >=
+            (r'🜗', 'purple'),  # <=
+            (r'🜍', 'purple'),  # !=
             (r'🝱', 'red'),  # !
             (r'☾', 'magenta'),  # (
             (r'☽', 'magenta'),  # )
-            (r'🝳', '#6E75A8'),  # declaración (nombreVariable)
-            (r'🝑', '#6E75A8'),  # asignación (variable = valor)
+            (r'🝳', 'Dark green'),  # declaración (nombreVariable)
+            (r'🝑', 'Dark green'),  # asignación (variable = valor)
             (r'🜌', 'cyan'),  # //
             (r'🜋🜋', 'cyan'),  # /**/
-            (r'null', '#6E75A8')  # null
+            (r'null', 'Dark green')  # null
         ]
         self.darkpattern = [
             (r'🝰', 'green'),  # int
@@ -115,6 +115,7 @@ class CodechemyIDE:
         self.editor.config(fg="black",bg="white")
         self.window.config(bg="white")
         self.patternUsed=self.lightpattern
+        self.output.config(fg="black",bg="white")
         self.highlight_syntax()
 
 
@@ -122,6 +123,7 @@ class CodechemyIDE:
     def dark(self):
         self.editor.config(fg="white", bg="black")
         self.window.config(bg="black")
+        self.output.config(fg="white", bg="black")
         self.patternUsed=self.darkpattern
         self.highlight_syntax()
 
