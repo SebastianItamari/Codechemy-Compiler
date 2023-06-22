@@ -265,7 +265,7 @@ class CodechemyIDE:
         else:
             save_path = self.file_path
         if save_path != '':
-            with open(save_path, "w") as file:
+            with open(save_path, "w", encoding="utf-8") as file:
                 code = self.editor.get("1.0", "end-1c")
                 file.write(code)
 
