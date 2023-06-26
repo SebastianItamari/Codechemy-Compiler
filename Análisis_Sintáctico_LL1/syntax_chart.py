@@ -105,7 +105,11 @@ def parse(sentence, chart, glc):
         for x in sentence:
             if x[2] == symbol[2] and x[1]!="\n":
                 linewithError = linewithError + f"{x[1]} "
-        print(f"Syntax error, line {symbol[2]}, in {linewithError}with symbol: {symbol[1]}")
+        print(f"Syntax error, line {symbol[2]}, in {linewithError} with ", end="")
+        if(symbol[0] == "s"):
+            print("end of line.")
+        else:
+            print(symbol[1])
         #tokens _> symbol. line se encuentra en symbol[2]
         #usar tokens para imprimir toda la linea con el error
         
@@ -113,10 +117,12 @@ def parse(sentence, chart, glc):
         
         print("Instead could use ", end="")
         possibleCharactersList = []
-        
-        for possibleCharacter in chart[last]:
-            if(chart[last][possibleCharacter]!="#"):
-                possibleCharactersList.append(possibleCharacter)
+        if(last in glc.terminals):
+            possibleCharactersList.append(last)
+        else: 
+            for possibleCharacter in chart[last]:
+                if(chart[last][possibleCharacter]!="#"):
+                    possibleCharactersList.append(possibleCharacter)
 
         possibleCharactersList = " , ".join(possibleCharactersList)
         print(possibleCharactersList)
