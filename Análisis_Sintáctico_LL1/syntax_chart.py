@@ -1,3 +1,8 @@
+class LL1Error(Exception):
+    def __init__(self, mensaje):
+        self.mensaje = mensaje
+
+
 def createChart(glc):
     chart = {}
     for x in glc.nonTerminals:
@@ -62,7 +67,7 @@ def parse(sentence, chart, glc):
     error = False 
     if(sentence == ""):
         error = True 
-        raise Exception 
+        raise Exception
     try:
         for symbol in sentence:
             character = symbol[0] #would be character in sentence.split()
@@ -88,7 +93,7 @@ def parse(sentence, chart, glc):
                 production = chart[last]['$']
                 if(production == "#"):
                     #error = True 
-                    raise Exception 
+                    raise Exception
                     #break
                 if(production != "λ"):
                     for char in production.split()[::-1]:
@@ -101,34 +106,71 @@ def parse(sentence, chart, glc):
             print("The sentence is syntactically correct.")
 
     except:
+        message = ""
         linewithError = ""
         for x in sentence:
             if x[2] == symbol[2] and x[1]!="\n":
                 linewithError = linewithError + f"{x[1]} "
-        print(f"Syntax error, line {symbol[2]}, in {linewithError} with ", end="")
+        #print(f"Syntax error, line {symbol[2]}, in {linewithError} with ", end="")
+        message = f"Syntax error, line {symbol[2]}, in {linewithError} with "
         if(symbol[0] == "s"):
-            print("end of line.")
+            #print("end of line.")
+            message = message + "end of line.\n"
         else:
-            print(symbol[1])
+            #print(symbol[1])
+            message = message + symbol[1] + "\n"
         #tokens _> symbol. line se encuentra en symbol[2]
         #usar tokens para imprimir toda la linea con el error
         
         #print("last:", last)
         
-        print("Instead could use ", end="")
+        #print("Instead could use ", end="")
+        message = message + "Instead could use "
         possibleCharactersList = []
         if(last in glc.terminals):
             possibleCharactersList.append(last)
         else: 
             for possibleCharacter in chart[last]:
                 if(chart[last][possibleCharacter]!="#"):
-                    possibleCharactersList.append(possibleCharacter)
+                    if(chart[last][possibleCharacter]=="s"):
+                        possibleCharactersList.append("end of line")
+                    else: 
+                        possibleCharactersList.append(possibleCharacter)
 
         possibleCharactersList = " , ".join(possibleCharactersList)
-        print(possibleCharactersList)
+        message = message + possibleCharactersList
+        raise LL1Error(message)
         
-        quit()
+        #quit()
     
+def generateExceptionMessage(sentence, symbol, last, glc, chart):
+    message = ""
+    linewithError = ""
+    for x in sentence:
+        if x[2] == symbol[2] and x[1]!="\n":
+            linewithError = linewithError + f"{x[1]} "
+    print(f"Syntax error, line {symbol[2]}, in {linewithError} with ", end="")
+    if(symbol[0] == "s"):
+        print("end of line.")
+    else:
+        print(symbol[1])
+        #tokens _> symbol. line se encuentra en symbol[2]
+        #usar tokens para imprimir toda la linea con el error
+        
+        #print("last:", last)
+        
+    print("Instead could use ", end="")
+    possibleCharactersList = []
+    if(last in glc.terminals):
+        possibleCharactersList.append(last)
+    else: 
+        for possibleCharacter in chart[last]:
+            if(chart[last][possibleCharacter]!="#"):
+                possibleCharactersList.append(possibleCharacter)
+
+    possibleCharactersList = " , ".join(possibleCharactersList)
+    message = possibleCharactersList
+    return message 
 
 def differentFirstandFollowing(firsts, followings):
     different = True

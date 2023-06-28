@@ -5,6 +5,8 @@ from tkinter.filedialog import asksaveasfilename, askopenfilename
 import re
 
 #local application imports
+from Análisis_Sintáctico_LL1.LL1 import LL1 
+from Análisis_Sintáctico_LL1.syntax_chart import * 
 from AnalisisSintacticoSLR.SLR import SLR, SLRError
 from AnalisisSintacticoCLR.CLR import CLR, CLRError
 from Análisis_Léxico.Analizador.AnalizadorLexico import AnalizadorLexico, LexicalError
@@ -99,6 +101,9 @@ class CodechemyIDE:
             self.syntax_analyzer.buildTable()
         elif analyzer == "CLR":
             self.syntax_analyzer = CLR(grammar)
+            self.syntax_analyzer.buildTable()
+        elif analyzer == "LL1":
+            self.syntax_analyzer = LL1(grammar)
             self.syntax_analyzer.buildTable()
 
         self.create_menu()
@@ -357,6 +362,14 @@ class CodechemyIDE:
             print(syntaxError.mensaje)
             print("------------------------")
             execution = execution + "\n" + "Error en analizador sintáctico CLR" + "\n" + syntaxError.mensaje
+
+        except LL1Error as syntaxError:
+            print("------------------------")
+            print("Error en analizador sintáctico LL1")
+            print(syntaxError.mensaje)
+            print("------------------------")
+            execution = execution + "\n" + "Error en analizador sintáctico LL1" + "\n" + syntaxError.mensaje
+
 
         self.output.delete("1.0", "end")
         self.output.insert("1.0", execution)
