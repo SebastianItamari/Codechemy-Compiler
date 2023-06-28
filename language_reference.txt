@@ -1,0 +1,41 @@
+Start and End Program
+🜉
+🝓
+
+Declare variable
+🝳 identifier 🝳 🝑 Expression
+
+if Statement
+se ☾ Condition ☽ 
+🜚
+Program
+🜚
+
+while Statement
+dum ☾ Condition ☽
+🜚
+Program
+🜚
+
+for Statement
+por ☾ Assignment ; Condition ; Assignment ☽
+🜚
+Program
+🜚
+
+Print
+presi ☾ Term ☽
+
+Arithmetic Operators
+🜂 + sum 
+🜄 - substraction
+🜁 * multiplication
+🜃 / division
+
+Logical Operators
+🜎 ==
+🜍 !=
+🜕 <
+🜔 >
+🜗 <=
+🜖 >=
