@@ -8,13 +8,44 @@ from Análisis_Sintáctico_LL1.syntax_chart import *
 
 class LL1:
     def __init__(self, grammar):
-
+        #region grammar LL1
+        '''
+        grammarLL1 = GLC('Start')
+        grammarLL1.add_production("Start", "🜉 s Program 🝓")
+        grammarLL1.add_production("Program", "Statement s")
+        grammarLL1.add_production("Program", "Statement s Program")
+        grammarLL1.add_production("Statement", "Assignment")
+        grammarLL1.add_production("Statement", "IfStatement")
+        grammarLL1.add_production("Statement", "WhileLoop")
+        grammarLL1.add_production("Statement", "ForLoop")
+        grammarLL1.add_production("Statement", "Print")
+        grammarLL1.add_production("Assignment", "🝳 identifier 🝳 🝑 Expression")
+        grammarLL1.add_production("Expression", "Term Expression'")
+        grammarLL1.add_production("Expression", "Term")
+        grammarLL1.add_production("Expression'", "🜂 Term")
+        grammarLL1.add_production("Expression'", "🜃 Term")
+        grammarLL1.add_production("Expression'", "🜁 Term")
+        grammarLL1.add_production("Expression'", "🜄 Term")
+        grammarLL1.add_production("Term", "🝳 identifier 🝳")
+        grammarLL1.add_production("Term", "constant")
+        grammarLL1.add_production("IfStatement", "se ☾ Condition ☽ s 🜚 s Program 🜚")
+        grammarLL1.add_production("Condition", "Expression 🜎 Expression")
+        grammarLL1.add_production("Condition", "Expression 🜍 Expression")
+        grammarLL1.add_production("Condition", "Expression 🜕 Expression")
+        grammarLL1.add_production("Condition", "Expression 🜔 Expression")
+        grammarLL1.add_production("Condition", "Expression 🜗 Expression")
+        grammarLL1.add_production("Condition", "Expression 🜖 Expression")
+        grammarLL1.add_production("WhileLoop", "dum ☾ Condition ☽ s 🜚 s Program 🜚")
+        grammarLL1.add_production("ForLoop", "por ☾ Assignment ; Condition ; Assignment ☽ s 🜚 s Program 🜚")
+        grammarLL1.add_production("Print", "presi ☾ Term ☽")
+        '''
         grammar.firstPhase()
         grammar.second_phase()
         grammar.left_factoring()
         grammar.eliminate_left_recursion()
         grammar.get_first()
         grammar.get_following()
+        #endregion
         self.grammar = grammar 
         self.chart = {}
 

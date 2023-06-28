@@ -128,7 +128,10 @@ def parse(sentence, chart, glc):
         message = message + "Instead could use "
         possibleCharactersList = []
         if(last in glc.terminals):
-            possibleCharactersList.append(last)
+            if(last=="s"):
+                possibleCharactersList.append("end of line")
+            else: 
+                possibleCharactersList.append(last)
         else: 
             for possibleCharacter in chart[last]:
                 if(chart[last][possibleCharacter]!="#"):
