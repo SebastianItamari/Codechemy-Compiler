@@ -31,4 +31,4 @@ grammar.add_production("WhileLoop", "dum ☾ Condition ☽ s 🜚 s Program 🜚
 grammar.add_production("ForLoop", "por ☾ Assignment ; Condition ; Assignment ☽ s 🜚 s Program 🜚")
 grammar.add_production("Print", "presi ☾ Term ☽")
 
-IDE = CodechemyIDE(grammar, "LL1")
+IDE = CodechemyIDE(grammar, "CLR")

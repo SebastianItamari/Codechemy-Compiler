@@ -9,7 +9,7 @@ from Análisis_Sintáctico_LL1.syntax_chart import *
 class LL1:
     def __init__(self, grammar):
         #region grammar LL1
-        '''
+        #'''
         grammarLL1 = GLC('Start')
         grammarLL1.add_production("Start", "🜉 s Program 🝓")
         grammarLL1.add_production("Program", "Statement s")
@@ -38,15 +38,15 @@ class LL1:
         grammarLL1.add_production("WhileLoop", "dum ☾ Condition ☽ s 🜚 s Program 🜚")
         grammarLL1.add_production("ForLoop", "por ☾ Assignment ; Condition ; Assignment ☽ s 🜚 s Program 🜚")
         grammarLL1.add_production("Print", "presi ☾ Term ☽")
-        '''
-        grammar.firstPhase()
-        grammar.second_phase()
-        grammar.left_factoring()
-        grammar.eliminate_left_recursion()
-        grammar.get_first()
-        grammar.get_following()
+        #'''
+        grammarLL1.firstPhase()
+        grammarLL1.second_phase()
+        grammarLL1.left_factoring()
+        grammarLL1.eliminate_left_recursion()
+        grammarLL1.get_first()
+        grammarLL1.get_following()
         #endregion
-        self.grammar = grammar 
+        self.grammar = grammarLL1 
         self.chart = {}
 
     def buildTable(self):
