@@ -48,7 +48,7 @@ Codechemy is a symbolic language inspired by alchemy. Each instruction uses uniq
 | Symbol          | Meaning                   |
 |----------------|----------------------------|
 | 🜉<br>🝓           | Start and End of Program   |
-| 🝳identifier🝳🝑Expression | Variable declaration         |
+| 🝳identifier🝳 🝑 Expression | Variable declaration         |
 
 ### 🔁 Control Structures
 | Symbol Sequence               | Meaning         |
