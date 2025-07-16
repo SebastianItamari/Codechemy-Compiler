@@ -42,18 +42,7 @@ This will open the Codechemy IDE, where you can enter your code and analyze it u
 
 <!-- gramar, examples table -->
 
-## Results 📊
-### ❌ Lexical Error
-<p align="center">
-  <img width="550" alt="image" src="https://github.com/user-attachments/assets/06b2d86e-3638-4f65-b58d-b26637c44f33" />
-</p>
-
-### ❌ Syntax Error
-<p align="center">
-  <img width="550" height="760" alt="image" src="https://github.com/user-attachments/assets/34b01391-770c-450d-a086-8cc4b54a70b2" />
-</p>
-
-### ✅ Valid Instruction
+## Result 📊
 <p align="center">
   <img width="550" height="758" alt="image" src="https://github.com/user-attachments/assets/32c9f947-23db-404d-93a4-4d8c44296eba" />
 </p>
