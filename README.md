@@ -40,7 +40,46 @@ python3 grammar_IDE_testing.py
 
 This will open the Codechemy IDE, where you can enter your code and analyze it using the compiler.
 
-<!-- gramar, examples table -->
+## Codechemy Syntax Guide 🧪
+
+Codechemy is a symbolic language inspired by alchemy. Each instruction uses unique Unicode symbols to reflect its purpose. Below is a reference of core syntax elements:
+
+### 🔰 Program Structure
+| Symbol          | Meaning                   |
+|----------------|----------------------------|
+| 🜉<br>🝓           | Start and End of Program   |
+| 🝳identifier🝳🝑Expression | Variable declaration         |
+
+### 🔁 Control Structures
+| Symbol Sequence               | Meaning         |
+|------------------------------|-----------------|
+| se ☾ Condition ☽<br>🜚<br>…<br>🜚         | `if` statement   |
+| dum ☾ Condition ☽<br>🜚<br>…<br>🜚       | `while` loop     |
+| por ☾ Assignment; Condition; Assignment ☽<br>🜚<br>…<br>🜚 | `for` loop       |
+
+### 🖨️ Output Instruction
+| Symbol          | Meaning           |
+|----------------|--------------------|
+| presi ☾ Term ☽     | Print to console   |
+
+### ➗ Operators
+**Arithmetic**:
+| Symbol | Operation        |
+|--------|------------------|
+| 🜂     | Addition (`+`) |
+| 🜄     | Subtraction (`-`)       |
+| 🜁     | Multiplication (`*`)            |
+| 🜃     | Division (`/`)    |
+
+**Logical**:
+| Symbol | Operation        |
+|--------|------------------|
+| �     | Equality (`==`)     |
+| 🜍     | Inequality (`!=`)          |
+| 🜕     | Less Than (`<`)        |
+| 🜔     | Greater Than (`>`)          |
+| 🜗     | Less or Equal (`<=`)       |
+| 🜖     | Greater or Equal (`>=`)     |
 
 ## Result 📊
 <p align="center">
